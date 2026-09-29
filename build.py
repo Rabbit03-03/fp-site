@@ -122,6 +122,8 @@ def main():
     (out / "assets").mkdir(parents=True)
     shutil.copy(SRC / "assets/style.css", out / "assets/style.css")
     shutil.copytree(SRC / "assets/img", out / "assets/img")
+    for f in SRC.glob("google*.html"):  # Search Console の所有権確認ファイル
+        shutil.copy(f, out / f.name)
     pages = []
     for p in sorted(SRC.rglob("*.body.html")):
         rel = str(p.relative_to(SRC)).replace(".body.html", ".html")
