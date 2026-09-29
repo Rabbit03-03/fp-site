@@ -338,3 +338,6 @@ img.rep-photo.small { width: 72px; height: 72px; box-shadow: none; }
 .visit .ledger td { white-space: normal; }
 main > section.cta { background: var(--primary); }
 main > section.seminar-band { background: linear-gradient(135deg, #fff6f0, #fff); }
+.article .checklist { padding-left: 0; grid-template-columns: minmax(0, 1fr); }
+.article .ledger tbody th { white-space: normal; }
+@media (max-width: 760px) { .article .ledger td.n { white-space: normal; } .ledger.compare tbody th { width: 30%; } .ledger.compare th, .ledger.compare td { padding: 10px 6px; font-size: .92rem; } }
