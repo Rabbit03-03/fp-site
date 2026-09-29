@@ -14,7 +14,7 @@ FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic&family=BIZ+UDPGothic:wght@400;700&family=Shippori+Mincho+B1:wght@700&display=swap">')
 
 HEADER = """<header class="site-head"><div class="wrap">
-  <a class="brand" href="{root}index.html"><b>〇〇FPオフィス</b><small>銀座の独立系FP ／ 福岡の経営者のご相談</small></a>
+  <a class="brand" href="{root}index.html"><b>株式会社DSK</b><small>東京の独立系FP ／ 福岡の経営者のご相談</small></a>
   <nav class="nav" aria-label="メイン">
     <a href="{root}houjin.html">法人のご相談</a>
     <a href="{root}column/houjin-nisa.html">法人NISA</a>
@@ -24,10 +24,10 @@ HEADER = """<header class="site-head"><div class="wrap">
 </div></header>"""
 
 FOOTER = """<footer class="site-foot"><div class="wrap">
-  <p><b>〇〇FPオフィス</b>　東京都中央区銀座<span class="todo">◯丁目◯-◯</span>　全国オンライン対応／福岡は毎月1回対面</p>
+  <p><b>株式会社DSK</b>　〒104-0031 東京都中央区京橋2-7-8 2F　全国オンライン対応／福岡は毎月1回対面</p>
   <p>保険代理店：<span class="todo">代理店名・登録番号・所属保険会社を記載</span></p>
   <p>当サイトの情報は一般的な内容です。個別の税務判断は税理士にご確認ください。</p>
-  <p>&copy; 2026 〇〇FPオフィス</p>
+  <p>&copy; 2026 株式会社DSK</p>
 </div></footer>
 <div class="mobile-bar"><a class="btn" href="{root}houjin.html#reserve">無料相談を予約</a></div>"""
 
