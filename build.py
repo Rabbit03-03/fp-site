@@ -15,7 +15,7 @@ ORG_LD = '{"@context": "https://schema.org", "@type": "ProfessionalService", "na
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic&family=BIZ+UDPGothic:wght@400;700&family=Shippori+Mincho+B1:wght@700&display=swap">')
+         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic&family=BIZ+UDPGothic:wght@400;700&display=swap">')
 
 HEADER = """<header class="site-head"><div class="wrap">
   <a class="brand" href="{root}index.html"><b>株式会社DSK</b><small>東京の独立系FP ／ 福岡の経営者のご相談</small></a>
