@@ -323,3 +323,18 @@ img.rep-photo.small { width: 72px; height: 72px; box-shadow: none; }
 .pros-cons .cons h3 { color: var(--accent-dark); }
 .article .steps { padding-left: 0; }
 @media (max-width: 760px) { .pros-cons { grid-template-columns: minmax(0, 1fr); } }
+
+/* LINE & seminar */
+.line-cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 20px; background: #effaf2; border: 1px solid #b9e4c6; border-radius: 12px; padding: 18px 20px; color: var(--ink); text-align: left; max-width: var(--measure); width: 100%; }
+.line-cta b { font-size: 1.05rem; }
+.line-cta p { font-size: .95rem; color: var(--ink-soft); margin-top: 4px; }
+.btn.line { background: #06c755; border-color: #06c755; box-shadow: none; }
+.btn.line:hover { background: #05a847; border-color: #05a847; }
+.seminar-band { background: linear-gradient(135deg, #fff6f0, #fff); border-top: 1px solid var(--rule); }
+.seminar-band .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px; }
+.seminar-band h2 { font-size: clamp(1.4rem, 3.2vw, 1.9rem); }
+.seminar-band p:not(.eyebrow) { color: var(--ink-soft); margin-top: 6px; }
+#apply .article { padding-block: 0; }
+.visit .ledger td { white-space: normal; }
+main > section.cta { background: var(--primary); }
+main > section.seminar-band { background: linear-gradient(135deg, #fff6f0, #fff); }

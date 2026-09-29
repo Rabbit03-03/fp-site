@@ -1,0 +1,86 @@
+<!--
+title: 【無料・オンライン】社長のための「法人NISA」入門セミナー｜株式会社DSK
+description: 会社の利益を法人保険で積み立て、社長の退職金として税負担を抑えて受け取る「法人NISA」の考え方を、オンラインで分かりやすく解説する無料セミナーです。中小企業の社長・役員の方が対象です。
+-->
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">無料オンラインセミナー</p>
+        <h1>社長のための<br><em>「法人NISA」</em>入門</h1>
+        <p class="lead">会社の利益を、税負担を抑えて社長の退職金に変える方法を、図と試算で解説します。</p>
+        <ul class="badges">
+          <li>{{icon:monitor}}Zoomで参加</li>
+          <li>{{icon:yen}}参加無料</li>
+        </ul>
+        <div class="btn-row"><a class="btn" href="#apply">セミナーに申し込む</a></div>
+      </div>
+      <aside class="visit" aria-label="セミナーの概要">
+        <span class="label">開催概要</span>
+        <table class="ledger">
+          <tbody>
+            <tr><th scope="row">形式</th><td>オンライン（Zoom）</td></tr>
+            <tr><th scope="row">時間</th><td>約45分</td></tr>
+            <tr><th scope="row">参加費</th><td>無料</td></tr>
+            <tr><th scope="row">対象</th><td>中小企業の社長・役員</td></tr>
+            <tr><th scope="row">日程</th><td>お申込み後にメールでご案内</td></tr>
+          </tbody>
+        </table>
+      </aside>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><h2>このセミナーで分かること</h2></div>
+      <div class="reasons">
+        <div><span class="ic-wrap">{{icon:briefcase}}</span><h3>法人NISAのしくみ</h3><p>利益を積み立て、退任時に受け取る流れ。</p></div>
+        <div><span class="ic-wrap">{{icon:yen}}</span><h3>税金がいくら変わるか</h3><p>役員報酬と退職金の手取りを比べます。</p></div>
+        <div><span class="ic-wrap">{{icon:doc}}</span><h3>いまの保険の点検方法</h3><p>2019年以降のルールで見直す点。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><h2>講師</h2></div>
+      <div class="rep">
+        <img class="rep-photo" src="{{root}}assets/img/daihyo.jpg" alt="講師 五十嵐大輔" width="640" height="800" loading="lazy">
+        <div class="rep-body">
+          <h3>五十嵐 大輔（株式会社DSK 代表取締役）</h3>
+          <p>AFP（日本FP協会認定）、相続診断士、がんファイナンスアドバイザー、証券外務員二種。2012年の設立以来、3,000名以上のお金の相談を受けてきました。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="apply">
+    <div class="wrap">
+      <div class="article">
+        <div class="sec-head"><h2>お申込み</h2><p>開催日の候補をメールでお送りします。</p></div>
+        {{form_notice}}
+        <form class="form" action="{{form_action}}" method="POST">
+          <input type="hidden" name="_subject" value="【サイト】法人NISAセミナーの申込みがありました">
+          <input type="hidden" name="_next" value="{{site_url}}seminar-thanks.html">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <fieldset>
+            <div class="field"><label for="company">会社名 <span class="req">必須</span></label><input id="company" name="会社名" type="text" required autocomplete="organization"></div>
+            <div class="field"><label for="name">お名前 <span class="req">必須</span></label><input id="name" name="お名前" type="text" required autocomplete="name"></div>
+            <div class="field"><label for="email">メールアドレス <span class="req">必須</span></label><input id="email" name="email" type="email" required autocomplete="email"></div>
+            <div class="field-row">
+              <div class="field"><label for="role">お立場</label>
+                <select id="role" name="お立場"><option value="">選択してください</option><option>社長</option><option>役員</option><option>その他</option></select></div>
+              <div class="field"><label for="staff">従業員数</label>
+                <select id="staff" name="従業員数"><option value="">選択してください</option><option>1〜9名</option><option>10〜29名</option><option>30〜99名</option><option>100名以上</option></select></div>
+            </div>
+            <div class="field"><label for="msg">聞いてみたいこと</label><textarea id="msg" name="聞いてみたいこと" rows="4" placeholder="例：いま入っている法人保険が役に立つのか知りたい"></textarea></div>
+          </fieldset>
+          <label class="agree"><input type="checkbox" required> <span>株式会社DSKの<a href="https://www.dsk-real.co.jp/blank-8" rel="noopener">個人情報保護方針</a>に同意します <span class="req">必須</span></span></label>
+          <div class="btn-row"><button class="btn" type="submit">セミナーに申し込む</button></div>
+          <p class="note">送信後、迷惑メール防止の確認画面が表示されることがあります。</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>

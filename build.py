@@ -13,6 +13,11 @@ FORM_TO = "50dskreal@gmail.com"
 
 ORG_LD = '{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "株式会社DSK", "url": "SITEURL", "foundingDate": "2012-11", "founder": {"@type": "Person", "name": "五十嵐大輔", "jobTitle": "代表取締役"}, "address": {"@type": "PostalAddress", "postalCode": "104-0031", "addressRegion": "東京都", "addressLocality": "中央区", "streetAddress": "京橋2-7-8 2F", "addressCountry": "JP"}, "areaServed": "JP", "sameAs": ["https://www.dsk-real.co.jp/"]}'
 
+LINE_URL = "https://lin.ee/SuhoSRC"
+LINE_CTA = ('<div class="line-cta"><div><b>いきなり相談は、まだ早いかなという方へ</b>'
+            '<p>LINEで友だち追加だけでもOKです。気になったことをLINEで気軽に質問できます。</p></div>'
+            f'<a class="btn line" href="{LINE_URL}" rel="noopener">LINEで友だち追加</a></div>')
+
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">')
@@ -30,7 +35,7 @@ HEADER = """<header class="site-head"><div class="wrap">
 
 FOOTER = """<footer class="site-foot"><div class="wrap">
   <p><b>株式会社DSK</b>　〒104-0031 東京都中央区京橋2-7-8 2F　全国オンライン対応／福岡は毎月1回対面</p>
-  <p class="foot-links"><a href="{root}company.html">会社概要</a><a href="{root}houjin.html#faq">よくあるご質問</a><a href="https://www.dsk-real.co.jp/blank-8" rel="noopener">個人情報保護方針</a><a href="https://lin.ee/SuhoSRC" rel="noopener">LINE公式アカウント</a><a href="https://www.dsk-real.co.jp/" rel="noopener">個人のお客様向けサイト</a></p>
+  <p class="foot-links"><a href="{root}company.html">会社概要</a><a href="{root}houjin.html#faq">よくあるご質問</a><a href="https://www.dsk-real.co.jp/blank-8" rel="noopener">個人情報保護方針</a><a href="{root}seminar.html">無料セミナー</a><a href="https://lin.ee/SuhoSRC" rel="noopener">LINE公式アカウント</a><a href="https://www.dsk-real.co.jp/" rel="noopener">個人のお客様向けサイト</a></p>
   <p>当サイトの情報は一般的な内容です。個別の税務判断は税理士にご確認ください。</p>
   <p>&copy; 2026 株式会社DSK</p>
 </div></footer>
@@ -66,7 +71,7 @@ def parse(path):
 def render(rel, meta, body, bare):
     depth = rel.count("/")
     root = "../" * depth
-    body = body.replace("{{root}}", root).replace("{{site_url}}", SITE_URL)
+    body = body.replace("{{root}}", root).replace("{{site_url}}", SITE_URL).replace("{{line_cta}}", LINE_CTA)
     body = re.sub(r"\{\{icon:(\w+)\}\}", lambda m: icon_svg(m.group(1)), body)
     if FORM_TO:
         body = body.replace("{{form_action}}", "https://formsubmit.co/" + FORM_TO).replace("{{form_notice}}", "")
@@ -76,7 +81,7 @@ def render(rel, meta, body, bare):
     url = SITE_URL + rel.replace("index.html", "")
     head = (f'<title>{meta["title"]}</title>\n'
             f'<meta name="description" content="{meta["description"]}">\n'
-            + ('<meta name="robots" content="noindex">\n' if rel == "thanks.html" else "")
+            + ('<meta name="robots" content="noindex">\n' if rel.endswith("thanks.html") else "")
             + f'<link rel="canonical" href="{url}">\n'
             f'<meta property="og:title" content="{meta["title"]}">\n'
             f'<meta property="og:description" content="{meta["description"]}">\n'
@@ -110,7 +115,7 @@ def main():
         pages.append(rel)
     if not preview:
         (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}sitemap.xml\n")
-        urls = "".join(f"  <url><loc>{SITE_URL}{r.replace('index.html', '')}</loc></url>\n" for r in pages if r != 'thanks.html')
+        urls = "".join(f"  <url><loc>{SITE_URL}{r.replace('index.html', '')}</loc></url>\n" for r in pages if not r.endswith('thanks.html'))
         (out / "sitemap.xml").write_text(
             '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
             + urls + "</urlset>\n")
