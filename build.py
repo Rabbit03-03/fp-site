@@ -15,7 +15,7 @@ ORG_LD = '{"@context": "https://schema.org", "@type": "ProfessionalService", "na
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic&family=BIZ+UDPGothic:wght@400;700&display=swap">')
+         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">')
 
 HEADER = """<header class="site-head"><div class="wrap">
   <a class="brand" href="{root}index.html"><b>株式会社DSK</b><small>東京の独立系FP ／ 福岡の経営者のご相談</small></a>
@@ -37,6 +37,25 @@ FOOTER = """<footer class="site-foot"><div class="wrap">
 <div class="mobile-bar"><a class="btn" href="{root}yoyaku.html">無料相談を予約</a></div>"""
 
 
+ICONS = {
+    "people": '<circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M15.5 14.2c3.2-.4 6 1.6 6 5.3"/>',
+    "briefcase": '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/>',
+    "house": '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/>',
+    "shield": '<path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+    "doc": '<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/>',
+    "check": '<path d="M4 12.5l5 5 11-11"/>',
+    "monitor": '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
+    "pin": '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+    "yen": '<circle cx="12" cy="12" r="9"/><path d="M8.5 7l3.5 5 3.5-5M12 12v6M9 13h6M9 16h6"/>',
+    "handshake": '<path d="M3 12l4-4 4 2 3-2 4 4-6 6z"/><path d="M11 10l-3 3 2 2"/>',
+}
+
+
+def icon_svg(name):
+    return (f'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+            f'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{ICONS[name]}</svg>')
+
+
 def parse(path):
     text = path.read_text(encoding="utf-8")
     m = re.match(r"<!--\s*(.*?)-->\s*", text, re.S)
@@ -48,6 +67,7 @@ def render(rel, meta, body, bare):
     depth = rel.count("/")
     root = "../" * depth
     body = body.replace("{{root}}", root).replace("{{site_url}}", SITE_URL)
+    body = re.sub(r"\{\{icon:(\w+)\}\}", lambda m: icon_svg(m.group(1)), body)
     if FORM_TO:
         body = body.replace("{{form_action}}", "https://formsubmit.co/" + FORM_TO).replace("{{form_notice}}", "")
     else:
