@@ -1,0 +1,131 @@
+<!--
+title: 役員退職金・退職金の手取りシミュレーター（税金を自動計算）｜株式会社DSK
+description: 退職金の金額と勤続年数（在任年数）を入れるだけで、退職所得控除、所得税・住民税、手取り額をその場で計算します。役員退職金の目安（最終報酬月額×在任年数×功績倍率）も計算できます。
+-->
+<main>
+  <div class="article">
+    <p class="crumbs"><a href="{{root}}index.html">トップ</a> ／ 退職金の手取りシミュレーター</p>
+    <h1>退職金の手取りシミュレーター</h1>
+    <p>金額と年数を入れるだけで、税金と手取りを計算します。入力した内容はどこにも送信されません。</p>
+
+    <form class="form sim" id="sim" onsubmit="return false">
+      <fieldset>
+        <legend>1. 退職金の金額を決める</legend>
+        <details class="helper">
+          <summary>役員退職金の目安を計算する</summary>
+          <div class="field-row three">
+            <div class="field"><label for="pay">最終の報酬月額（万円）</label><input id="pay" type="number" inputmode="decimal" min="0" step="1" value="100"></div>
+            <div class="field"><label for="ratio">功績倍率</label>
+              <select id="ratio"><option value="1">1.0倍</option><option value="1.5">1.5倍</option><option value="2" selected>2.0倍</option><option value="2.5">2.5倍</option><option value="3">3.0倍</option></select></div>
+            <div class="field"><label>&nbsp;</label><button type="button" class="btn ghost" id="useEst">この目安を使う</button></div>
+          </div>
+          <p class="note">目安 ＝ 最終の報酬月額 × 在任年数 × 功績倍率。社長の功績倍率は2〜3倍が一つの目安とされますが、会社ごとに判断されます。</p>
+        </details>
+        <div class="field-row">
+          <div class="field"><label for="amount">退職金の金額（万円）</label><input id="amount" type="number" inputmode="decimal" min="0" step="1" value="5000"></div>
+          <div class="field"><label for="years">勤続年数・在任年数（年）</label><input id="years" type="number" inputmode="numeric" min="1" max="60" step="1" value="25"></div>
+        </div>
+        <div class="checks">
+          <label><input type="radio" name="kind" value="officer" checked> 役員（社長など）</label>
+          <label><input type="radio" name="kind" value="staff"> 従業員</label>
+        </div>
+      </fieldset>
+    </form>
+
+    <section class="sim-result" aria-live="polite">
+      <div class="sim-head">
+        <div><span>手取り</span><b id="rNet">―</b></div>
+        <div><span>税金の合計</span><b id="rTax">―</b></div>
+        <div><span>税金の割合</span><b id="rRate">―</b></div>
+      </div>
+      <div class="bar" role="img" id="rBar" aria-label="">
+        <span class="net" id="rBarNet" style="width: 86%">手取り</span>
+        <span class="tax" id="rBarTax" style="width: 14%">税</span>
+      </div>
+      <p class="note" id="rCompare"></p>
+      <div class="table-scroll">
+        <table class="ledger">
+          <tbody>
+            <tr><th scope="row">退職金</th><td class="n" id="tAmount"></td></tr>
+            <tr><th scope="row">退職所得控除</th><td class="n" id="tDed"></td></tr>
+            <tr><th scope="row" id="tTaxableLabel">課税退職所得</th><td class="n" id="tTaxable"></td></tr>
+            <tr><th scope="row">所得税（復興特別所得税を含む）</th><td class="n" id="tInc"></td></tr>
+            <tr><th scope="row">住民税</th><td class="n" id="tRes"></td></tr>
+            <tr class="total"><th scope="row">手取り</th><td class="n" id="tNet"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" id="rWarn"></p>
+    </section>
+
+    <div class="inline-cta">
+      <p>この退職金を、会社の利益からどう準備するか。<br>御社の決算書で無料で試算します。</p>
+      <div class="btn-row"><a class="btn" href="{{root}}yoyaku.html">無料相談を予約する</a><a class="btn ghost" href="{{root}}column/houjin-nisa.html">法人NISAとは</a></div>
+    </div>
+
+    <h2>計算のしかた</h2>
+    <ol class="scheme compact">
+      <li><span class="step-no">1</span><b>退職金</b><small>受け取る総額</small></li>
+      <li><span class="step-no">2</span><b>控除を引く</b><small>勤続が長いほど大きい</small></li>
+      <li><span class="step-no">3</span><b>1/2にする</b><small>課税は半分だけ</small></li>
+      <li class="goal"><span class="step-no">4</span><b>税率をかける</b><small>給与とは別に計算</small></li>
+    </ol>
+    <div class="table-scroll">
+      <table class="ledger">
+        <thead><tr><th scope="col">勤続年数</th><th scope="col">退職所得控除</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">20年以下</th><td>40万円 × 年数（最低80万円）</td></tr>
+          <tr><th scope="row">20年超</th><td>800万円 ＋ 70万円 ×（年数 − 20年）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li>役員で在任5年以下の場合は、1/2にする計算が使えません。</li>
+      <li>従業員で勤続5年以下の場合は、控除後300万円を超える部分に1/2が使えません。</li>
+      <li>1年未満の端数は1年に切り上げて数えます。</li>
+    </ul>
+    <p class="note">この計算は、ほかに退職金を受け取っていない場合の概算です。障害者になったことによる退職の加算や、前年以前に受け取った退職金との調整は含みません。実際の税額は税理士にご確認ください。税制は2026年9月時点のものです。</p>
+  </div>
+</main>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var yen = function (n) { return Math.round(n).toLocaleString("ja-JP") + "円"; };
+  var man = function (n) { return Math.round(n / 10000).toLocaleString("ja-JP") + "万円"; };
+  var BRACKETS = [[1949000, .05, 0], [3299000, .10, 97500], [6949000, .20, 427500], [8999000, .23, 636000],
+                  [17999000, .33, 1536000], [39999000, .40, 2796000], [Infinity, .45, 4796000]];
+  function incomeTax(t) {
+    for (var i = 0; i < BRACKETS.length; i++) if (t <= BRACKETS[i][0]) return Math.floor(Math.max(0, t * BRACKETS[i][1] - BRACKETS[i][2]) * 1.021);
+  }
+  function calc() {
+    var amount = Math.max(0, parseFloat($("amount").value) || 0) * 10000;
+    var years = Math.max(1, Math.ceil(parseFloat($("years").value) || 1));
+    var officer = document.querySelector("input[name=kind]:checked").value === "officer";
+    var ded = years <= 20 ? Math.max(800000, 400000 * years) : 8000000 + 700000 * (years - 20);
+    var over = Math.max(0, amount - ded), taxable, rule = "（控除後 × 1/2）";
+    if (years <= 5 && officer) { taxable = over; rule = "（在任5年以下の役員は1/2なし）"; }
+    else if (years <= 5 && over > 3000000) { taxable = 1500000 + (over - 3000000); rule = "（勤続5年以下のため一部1/2なし）"; }
+    else taxable = over / 2;
+    taxable = Math.floor(taxable / 1000) * 1000;
+    var inc = incomeTax(taxable);
+    var res = Math.floor(taxable * .04 / 100) * 100 + Math.floor(taxable * .06 / 100) * 100;
+    var tax = inc + res, net = amount - tax, rate = amount ? tax / amount * 100 : 0;
+    $("rNet").textContent = man(net); $("rTax").textContent = man(tax); $("rRate").textContent = rate.toFixed(1) + "%";
+    var tw = Math.min(100, Math.max(rate, 0));
+    $("rBarNet").style.width = (100 - tw) + "%"; $("rBarTax").style.width = tw + "%";
+    $("rBarTax").textContent = tw >= 9 ? "税" : "";
+    $("rBar").setAttribute("aria-label", "手取り" + man(net) + "、税金" + man(tax));
+    $("rCompare").textContent = amount ? "同じ金額に最高税率（約55%）がかかると、税金は約" + man(amount * .55) + "。退職金で受け取ると約" + man(amount * .55 - tax) + "の差になります。" : "";
+    $("tAmount").textContent = yen(amount); $("tDed").textContent = "−" + yen(Math.min(ded, amount));
+    $("tTaxableLabel").textContent = "課税退職所得" + rule; $("tTaxable").textContent = yen(taxable);
+    $("tInc").textContent = yen(inc); $("tRes").textContent = yen(res); $("tNet").textContent = yen(net);
+    $("rWarn").textContent = officer ? "役員退職金が高すぎると、会社の経費として認められないことがあります。金額は役員退職金規程と顧問税理士の確認を前提にしてください。" : "";
+  }
+  $("useEst").addEventListener("click", function () {
+    var est = (parseFloat($("pay").value) || 0) * (parseFloat($("years").value) || 0) * parseFloat($("ratio").value);
+    $("amount").value = Math.round(est); calc();
+  });
+  $("sim").addEventListener("input", calc);
+  calc();
+})();
+</script>

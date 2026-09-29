@@ -289,3 +289,33 @@ section.cta { background: var(--primary); color: #fff; text-align: center; }
   .mobile-bar .btn { flex: 1; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+
+/* simulator */
+.form input[type=number] { width: 100%; font: inherit; color: var(--ink); background: #fbfcfe; border: 1.5px solid #b9c5d3; border-radius: 8px; padding: 12px 14px; min-height: 52px; font-size: 1.15rem; font-weight: 700; }
+.sim .checks input { margin-top: 3px; }
+.field-row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; }
+.field-row.three .btn { width: 100%; min-height: 52px; padding-inline: 8px; cursor: pointer; font-family: inherit; }
+.helper { background: var(--bg-alt); border-radius: 10px; padding: 12px 16px; }
+.helper summary { cursor: pointer; font-weight: 700; color: var(--primary); }
+.helper[open] { display: grid; gap: 14px; }
+.sim-result { background: var(--bg); border: 2px solid var(--primary); border-radius: 14px; padding: 22px; display: grid; gap: 16px; box-shadow: 0 8px 24px rgba(13,74,135,.10); }
+.sim-head { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; text-align: center; }
+.sim-head span { display: block; font-size: .9rem; color: var(--ink-soft); font-weight: 500; }
+.sim-head b { font-size: clamp(1.25rem, 4vw, 1.8rem); color: var(--primary); font-variant-numeric: tabular-nums; }
+.sim-head div:first-child b { color: var(--ink); }
+.sim-head div:nth-child(2) b { color: var(--accent-dark); }
+.sim-result .bar span { transition: width .4s ease; }
+.sim-result .ledger th { white-space: normal; }
+@media (max-width: 760px) { .field-row.three { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .field-row.three .field:last-child { grid-column: 1 / -1; } .sim-result { padding: 16px; } }
+
+/* comparison */
+.ledger.compare th, .ledger.compare td { text-align: center; }
+.ledger.compare tbody th { text-align: left; }
+.ledger.compare td { font-weight: 500; }
+.pros-cons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.pros-cons > div { border-radius: 10px; padding: 16px 18px; display: grid; gap: 8px; align-content: start; }
+.pros-cons .pros { background: var(--primary-soft); }
+.pros-cons .cons { background: #fff6f0; }
+.pros-cons .cons h3 { color: var(--accent-dark); }
+.article .steps { padding-left: 0; }
+@media (max-width: 760px) { .pros-cons { grid-template-columns: minmax(0, 1fr); } }
