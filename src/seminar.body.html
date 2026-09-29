@@ -60,10 +60,7 @@ description: 会社の利益を法人保険で積み立て、社長の退職金�
         <div class="sec-head"><h2>お申込み</h2><p>開催日の候補をメールでお送りします。</p></div>
         {{form_notice}}
         <form class="form" action="{{form_action}}" method="POST">
-          <input type="hidden" name="_subject" value="[DSK site] New seminar registration">
-          <input type="hidden" name="_next" value="{{site_url}}seminar-thanks.html">
-          <input type="hidden" name="_template" value="table">
-          <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          {{form_hidden:[DSK site] New seminar registration|seminar-thanks.html}}
           <fieldset>
             <div class="field"><label for="company">会社名 <span class="req">必須</span></label><input id="company" name="company" type="text" required autocomplete="organization"></div>
             <div class="field"><label for="name">お名前 <span class="req">必須</span></label><input id="name" name="name" type="text" required autocomplete="name"></div>

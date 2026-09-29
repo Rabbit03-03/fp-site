@@ -10,6 +10,8 @@ SRC = ROOT / "src"
 SITE_URL = "https://rabbit03-03.github.io/fp-site/"  # 独自ドメインが決まったら差し替え
 # 予約フォームの送信先メール（FormSubmit.co 経由）。初回送信時に確認メールが届くので承認する。
 FORM_TO = "50dskreal@gmail.com"
+# Web3Forms のアクセスキー（公開してよいキー）。入っていれば FormSubmit の代わりに使う。
+WEB3_KEY = ""
 
 ORG_LD = '{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "株式会社DSK", "url": "SITEURL", "foundingDate": "2012-11", "founder": {"@type": "Person", "name": "五十嵐大輔", "jobTitle": "代表取締役"}, "address": {"@type": "PostalAddress", "postalCode": "104-0031", "addressRegion": "東京都", "addressLocality": "中央区", "streetAddress": "京橋2-7-8 2F", "addressCountry": "JP"}, "areaServed": "JP", "sameAs": ["https://www.dsk-real.co.jp/"]}'
 
@@ -73,7 +75,22 @@ def render(rel, meta, body, bare):
     root = "../" * depth
     body = body.replace("{{root}}", root).replace("{{site_url}}", SITE_URL).replace("{{line_cta}}", LINE_CTA)
     body = re.sub(r"\{\{icon:(\w+)\}\}", lambda m: icon_svg(m.group(1)), body)
-    if FORM_TO:
+    def hidden(m):
+        subject, nxt = m.group(1), SITE_URL + m.group(2)
+        if WEB3_KEY:
+            return (f'<input type="hidden" name="access_key" value="{WEB3_KEY}">'
+                    f'<input type="hidden" name="subject" value="{subject}">'
+                    '<input type="hidden" name="from_name" value="DSK website">'
+                    f'<input type="hidden" name="redirect" value="{nxt}">'
+                    '<input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">')
+        return (f'<input type="hidden" name="_subject" value="{subject}">'
+                f'<input type="hidden" name="_next" value="{nxt}">'
+                '<input type="hidden" name="_template" value="table">'
+                '<input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">')
+    body = re.sub(r"\{\{form_hidden:([^|]+)\|([^}]+)\}\}", hidden, body)
+    if WEB3_KEY:
+        body = body.replace("{{form_action}}", "https://api.web3forms.com/submit").replace("{{form_notice}}", "")
+    elif FORM_TO:
         body = body.replace("{{form_action}}", "https://formsubmit.co/" + FORM_TO).replace("{{form_notice}}", "")
     else:
         body = body.replace("{{form_action}}", "#").replace(

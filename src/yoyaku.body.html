@@ -9,11 +9,8 @@ description: 中小企業の社長向け無料相談（オンライン60分）�
     <p>初回はオンライン（Zoomなど）で60分、無料です。ご入力いただいた内容を確認し、2営業日以内にメールで日程をご連絡します。2回目以降のご相談は1時間22,000円（税込）です。</p>
     {{form_notice}}
     <form class="form" action="{{form_action}}" method="POST">
-      <input type="hidden" name="_subject" value="[DSK site] New consultation booking">
-      <input type="hidden" name="_next" value="{{site_url}}thanks.html">
-      <input type="hidden" name="_template" value="table">
+      {{form_hidden:[DSK site] New consultation booking|thanks.html}}
       <input type="hidden" name="topics" id="topics">
-      <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 
       <fieldset>
         <legend>ご連絡先</legend>
