@@ -9,7 +9,7 @@ ROOT = pathlib.Path(__file__).parent
 SRC = ROOT / "src"
 SITE_URL = "https://rabbit03-03.github.io/fp-site/"  # 独自ドメインが決まったら差し替え
 # 予約フォームの送信先メール（FormSubmit.co 経由）。初回送信時に確認メールが届くので承認する。
-FORM_TO = ""
+FORM_TO = "50dskreal@gmail.com"
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
