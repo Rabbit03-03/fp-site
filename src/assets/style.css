@@ -173,3 +173,24 @@ section { padding-block: 56px; border-bottom: 1px solid var(--rule); }
   body { padding-bottom: 76px; }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+
+/* form */
+.form { display: grid; gap: 28px; }
+.form fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 14px; min-width: 0; }
+.form legend { font-family: var(--display); font-weight: 700; font-size: 1.15rem; padding: 0 0 6px; border-bottom: 1px solid var(--rule); width: 100%; margin-bottom: 4px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.field label { font-weight: 700; font-size: .92rem; }
+.form input[type=text], .form input[type=email], .form input[type=tel], .form select, .form textarea {
+  width: 100%; font: inherit; color: var(--ink); background: var(--paper);
+  border: 1px solid var(--rule); border-radius: 4px; padding: 10px 12px; min-height: 46px;
+}
+.form input:focus-visible, .form select:focus-visible, .form textarea:focus-visible { outline: 3px solid var(--ai-soft); border-color: var(--ai); }
+.checks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; }
+.checks label, .agree { display: flex; gap: 8px; align-items: flex-start; font-size: .95rem; }
+.checks input, .agree input { width: 18px; height: 18px; margin-top: 5px; accent-color: var(--ai); flex: none; }
+.req { font-size: .7rem; font-weight: 700; color: var(--shu); border: 1px solid var(--shu); border-radius: 3px; padding: 0 4px; margin-left: 4px; vertical-align: 1px; }
+.form button.btn { cursor: pointer; font: inherit; font-weight: 700; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.visit .ledger { font-size: .95rem; }
+@media (max-width: 760px) { .field-row, .checks { grid-template-columns: minmax(0, 1fr); } }
