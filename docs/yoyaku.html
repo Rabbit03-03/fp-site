@@ -32,20 +32,21 @@
     <p>初回はオンライン（Zoomなど）で60分、無料です。ご入力いただいた内容を確認し、2営業日以内にメールで日程をご連絡します。2回目以降のご相談は1時間22,000円（税込）です。</p>
     
     <form class="form" action="https://formsubmit.co/50dskreal@gmail.com" method="POST">
-      <input type="hidden" name="_subject" value="【サイト】無料相談の予約が入りました">
+      <input type="hidden" name="_subject" value="[DSK site] New consultation booking">
       <input type="hidden" name="_next" value="https://rabbit03-03.github.io/fp-site/thanks.html">
       <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="topics" id="topics">
       <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 
       <fieldset>
         <legend>ご連絡先</legend>
         <div class="field">
           <label for="company">会社名 <span class="req">必須</span></label>
-          <input id="company" name="会社名" type="text" required autocomplete="organization">
+          <input id="company" name="company" type="text" required autocomplete="organization">
         </div>
         <div class="field">
           <label for="name">お名前 <span class="req">必須</span></label>
-          <input id="name" name="お名前" type="text" required autocomplete="name">
+          <input id="name" name="name" type="text" required autocomplete="name">
         </div>
         <div class="field">
           <label for="email">メールアドレス <span class="req">必須</span></label>
@@ -53,16 +54,16 @@
         </div>
         <div class="field">
           <label for="tel">電話番号</label>
-          <input id="tel" name="電話番号" type="tel" autocomplete="tel">
+          <input id="tel" name="phone" type="tel" autocomplete="tel">
         </div>
         <div class="field-row">
           <div class="field">
             <label for="pref">所在地（都道府県）</label>
-            <input id="pref" name="所在地" type="text" placeholder="例：大阪府">
+            <input id="pref" name="prefecture" type="text" placeholder="例：大阪府">
           </div>
           <div class="field">
             <label for="staff">従業員数</label>
-            <select id="staff" name="従業員数">
+            <select id="staff" name="employees">
               <option value="">選択してください</option>
               <option>1〜9名</option><option>10〜29名</option><option>30〜99名</option><option>100名以上</option>
             </select>
@@ -73,12 +74,12 @@
       <fieldset>
         <legend>ご相談したいこと（いくつでも）</legend>
         <div class="checks">
-          <label><input type="checkbox" name="相談内容" value="従業員の退職金制度"> 従業員の退職金制度</label>
-          <label><input type="checkbox" name="相談内容" value="社長の退職金（法人NISA）"> 社長の退職金（法人NISA）</label>
-          <label><input type="checkbox" name="相談内容" value="法人保険の見直し"> 法人保険の見直し</label>
-          <label><input type="checkbox" name="相談内容" value="相続税・自社株対策"> 相続税・自社株対策</label>
-          <label><input type="checkbox" name="相談内容" value="事業保障"> 事業保障</label>
-          <label><input type="checkbox" name="相談内容" value="その他"> その他</label>
+          <label><input type="checkbox" data-topic value="従業員の退職金制度"> 従業員の退職金制度</label>
+          <label><input type="checkbox" data-topic value="社長の退職金（法人NISA）"> 社長の退職金（法人NISA）</label>
+          <label><input type="checkbox" data-topic value="法人保険の見直し"> 法人保険の見直し</label>
+          <label><input type="checkbox" data-topic value="相続税・自社株対策"> 相続税・自社株対策</label>
+          <label><input type="checkbox" data-topic value="事業保障"> 事業保障</label>
+          <label><input type="checkbox" data-topic value="その他"> その他</label>
         </div>
       </fieldset>
 
@@ -87,17 +88,17 @@
         <p class="note">平日・土日を問わず、ご都合のよい候補を2つほどお書きください。</p>
         <div class="field">
           <label for="d1">第1希望</label>
-          <input id="d1" name="第1希望" type="text" placeholder="例：10月8日（水）14時〜">
+          <input id="d1" name="date_1" type="text" placeholder="例：10月8日（水）14時〜">
         </div>
         <div class="field">
           <label for="d2">第2希望</label>
-          <input id="d2" name="第2希望" type="text" placeholder="例：10月10日（金）午前">
+          <input id="d2" name="date_2" type="text" placeholder="例：10月10日（金）午前">
         </div>
       </fieldset>
 
       <div class="field">
         <label for="msg">ご相談の内容・気になっていること</label>
-        <textarea id="msg" name="ご相談内容" rows="6" placeholder="例：社員が15名になり、退職金制度を作るか迷っています。"></textarea>
+        <textarea id="msg" name="message" rows="6" placeholder="例：社員が15名になり、退職金制度を作るか迷っています。"></textarea>
       </div>
 
       <label class="agree"><input id="agree" type="checkbox" required> <span>株式会社DSKの<a href="https://www.dsk-real.co.jp/blank-8" rel="noopener">個人情報保護方針</a>に同意します <span class="req">必須</span></span></label>
@@ -105,6 +106,11 @@
       <div class="btn-row"><button class="btn" type="submit">この内容で予約を申し込む</button></div>
       <p class="note">送信後、迷惑メール防止の確認画面が表示されることがあります。</p>
     </form>
+    <script>
+    document.querySelector("form.form").addEventListener("submit", function () {
+      document.getElementById("topics").value = Array.prototype.map.call(document.querySelectorAll("[data-topic]:checked"), function (c) { return c.value; }).join(" / ");
+    });
+    </script>
   </div>
 </main>
 <footer class="site-foot"><div class="wrap">
