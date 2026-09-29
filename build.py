@@ -29,6 +29,7 @@ HEADER = """<header class="site-head"><div class="wrap">
   <nav class="nav" aria-label="メイン">
     <a href="{root}houjin.html">法人のご相談</a>
     <a href="{root}column/houjin-nisa.html">法人NISA</a>
+    <a href="{root}column/index.html">コラム</a>
     <a href="{root}index.html#profile">代表紹介</a>
     <a href="{root}company.html">会社概要</a>
     <a href="{root}yoyaku.html">無料相談</a>
@@ -70,7 +71,33 @@ def parse(path):
     return meta, text[m.end():]
 
 
+def column_items():
+    """src/column/*.body.html から一覧用の情報を集める（新しい順）。"""
+    items = []
+    for p in SRC.glob("column/*.body.html"):
+        if p.name == "index.body.html":
+            continue
+        meta, body = parse(p)
+        cat = re.search(r"コラム ／ ([^<]+)</p>", body)
+        date = re.search(r'<time datetime="([0-9-]+)"', body)
+        items.append({"href": "column/" + p.name.replace(".body.html", ".html"),
+                      "title": meta.get("list") or meta["title"].split("｜")[0],
+                      "cat": cat.group(1).strip() if cat else "コラム",
+                      "date": date.group(1) if date else "",
+                      "mtime": p.stat().st_mtime})
+    return sorted(items, key=lambda i: (i["date"], i["mtime"]), reverse=True)
+
+
+def column_list_html(items):
+    return "\n".join(f'<li><a href="{{{{root}}}}{i["href"]}"><span class="t">{i["title"]}</span>'
+                     f'<span class="cat">{i["cat"]}</span></a></li>' for i in items)
+
+
 def render(rel, meta, body, bare):
+    if "{{column_" in body:
+        items = column_items()
+        body = body.replace("{{column_list}}", column_list_html(items))
+        body = re.sub(r"\{\{column_latest:(\d+)\}\}", lambda m: column_list_html(items[:int(m.group(1))]), body)
     depth = rel.count("/")
     root = "../" * depth
     body = body.replace("{{root}}", root).replace("{{site_url}}", SITE_URL).replace("{{line_cta}}", LINE_CTA)

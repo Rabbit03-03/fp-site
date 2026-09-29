@@ -341,3 +341,4 @@ main > section.seminar-band { background: linear-gradient(135deg, #fff6f0, #fff)
 .article .checklist { padding-left: 0; grid-template-columns: minmax(0, 1fr); }
 .article .ledger tbody th { white-space: normal; }
 @media (max-width: 760px) { .article .ledger td.n { white-space: normal; } .ledger.compare tbody th { width: 30%; } .ledger.compare th, .ledger.compare td { padding: 10px 6px; font-size: .92rem; } }
+.article .col-list { padding-left: 0; }
