@@ -11,6 +11,8 @@ SITE_URL = "https://rabbit03-03.github.io/fp-site/"  # 独自ドメインが決�
 # 予約フォームの送信先メール（FormSubmit.co 経由）。初回送信時に確認メールが届くので承認する。
 FORM_TO = "50dskreal@gmail.com"
 
+ORG_LD = '{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "株式会社DSK", "url": "SITEURL", "foundingDate": "2012-11", "founder": {"@type": "Person", "name": "五十嵐大輔", "jobTitle": "代表取締役"}, "address": {"@type": "PostalAddress", "postalCode": "104-0031", "addressRegion": "東京都", "addressLocality": "中央区", "streetAddress": "京橋2-7-8 2F", "addressCountry": "JP"}, "areaServed": ["福岡県", "日本"], "sameAs": ["https://www.dsk-real.co.jp/"]}'
+
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic&family=BIZ+UDPGothic:wght@400;700&family=Shippori+Mincho+B1:wght@700&display=swap">')
@@ -20,13 +22,15 @@ HEADER = """<header class="site-head"><div class="wrap">
   <nav class="nav" aria-label="メイン">
     <a href="{root}houjin.html">法人のご相談</a>
     <a href="{root}column/houjin-nisa.html">法人NISA</a>
-    <a href="{root}index.html#profile">プロフィール</a>
+    <a href="{root}index.html#profile">代表紹介</a>
+    <a href="{root}company.html">会社概要</a>
     <a href="{root}yoyaku.html">無料相談</a>
   </nav>
 </div></header>"""
 
 FOOTER = """<footer class="site-foot"><div class="wrap">
   <p><b>株式会社DSK</b>　〒104-0031 東京都中央区京橋2-7-8 2F　全国オンライン対応／福岡は毎月1回対面</p>
+  <p class="foot-links"><a href="{root}company.html">会社概要</a><a href="{root}houjin.html#faq">よくあるご質問</a><a href="https://www.dsk-real.co.jp/blank-8" rel="noopener">個人情報保護方針</a><a href="https://lin.ee/SuhoSRC" rel="noopener">LINE公式アカウント</a><a href="https://www.dsk-real.co.jp/" rel="noopener">個人のお客様向けサイト</a></p>
   <p>当サイトの情報は一般的な内容です。個別の税務判断は税理士にご確認ください。</p>
   <p>&copy; 2026 株式会社DSK</p>
 </div></footer>
@@ -58,7 +62,8 @@ def render(rel, meta, body, bare):
             f'<meta property="og:description" content="{meta["description"]}">\n'
             f'<meta property="og:type" content="{"article" if "column/" in rel else "website"}">\n'
             f'<meta property="og:url" content="{url}">\n'
-            f'{FONTS}\n<link rel="stylesheet" href="{root}assets/style.css">')
+            f'{FONTS}\n<link rel="stylesheet" href="{root}assets/style.css">\n'
+            f'<script type="application/ld+json">{ORG_LD.replace("SITEURL", SITE_URL)}</script>')
     inner = HEADER.format(root=root) + "\n" + body + FOOTER.format(root=root)
     if bare:
         head = head.replace(f'<title>{meta["title"]}</title>', "<title>福岡社長向けFPサイト</title>", 1)
