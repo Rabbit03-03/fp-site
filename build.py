@@ -11,14 +11,14 @@ SITE_URL = "https://rabbit03-03.github.io/fp-site/"  # 独自ドメインが決�
 # 予約フォームの送信先メール（FormSubmit.co 経由）。初回送信時に確認メールが届くので承認する。
 FORM_TO = "50dskreal@gmail.com"
 
-ORG_LD = '{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "株式会社DSK", "url": "SITEURL", "foundingDate": "2012-11", "founder": {"@type": "Person", "name": "五十嵐大輔", "jobTitle": "代表取締役"}, "address": {"@type": "PostalAddress", "postalCode": "104-0031", "addressRegion": "東京都", "addressLocality": "中央区", "streetAddress": "京橋2-7-8 2F", "addressCountry": "JP"}, "areaServed": ["福岡県", "日本"], "sameAs": ["https://www.dsk-real.co.jp/"]}'
+ORG_LD = '{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "株式会社DSK", "url": "SITEURL", "foundingDate": "2012-11", "founder": {"@type": "Person", "name": "五十嵐大輔", "jobTitle": "代表取締役"}, "address": {"@type": "PostalAddress", "postalCode": "104-0031", "addressRegion": "東京都", "addressLocality": "中央区", "streetAddress": "京橋2-7-8 2F", "addressCountry": "JP"}, "areaServed": "JP", "sameAs": ["https://www.dsk-real.co.jp/"]}'
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">')
 
 HEADER = """<header class="site-head"><div class="wrap">
-  <a class="brand" href="{root}index.html"><b>株式会社DSK</b><small>東京の独立系FP ／ 福岡の経営者のご相談</small></a>
+  <a class="brand" href="{root}index.html"><b>株式会社DSK</b><small>東京の独立系FP ／ 全国の社長のご相談</small></a>
   <nav class="nav" aria-label="メイン">
     <a href="{root}houjin.html">法人のご相談</a>
     <a href="{root}column/houjin-nisa.html">法人NISA</a>
@@ -86,7 +86,7 @@ def render(rel, meta, body, bare):
             f'<script type="application/ld+json">{ORG_LD.replace("SITEURL", SITE_URL)}</script>')
     inner = HEADER.format(root=root) + "\n" + body + FOOTER.format(root=root)
     if bare:
-        head = head.replace(f'<title>{meta["title"]}</title>', "<title>福岡社長向けFPサイト</title>", 1)
+        head = head.replace(f'<title>{meta["title"]}</title>', "<title>社長向けFPサイト</title>", 1)
         return head + "\n" + inner
     return ('<!doctype html>\n<html lang="ja">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
