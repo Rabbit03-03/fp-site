@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://rabbit03-03.github.io/fp-site/sitemap.xml
