@@ -11,6 +11,8 @@ SITE_URL = "https://rabbit03-03.github.io/fp-site/"  # 独自ドメインが決�
 # 予約フォームの送信先メール（FormSubmit.co 経由）。初回送信時に確認メールが届くので承認する。
 FORM_TO = "50dskreal@gmail.com"
 # Web3Forms のアクセスキー（公開してよいキー）。入っていれば FormSubmit の代わりに使う。
+# Googleアナリティクス4 の測定ID（G-で始まる）。入っていれば全ページにタグを入れる。
+GA_ID = ""
 WEB3_KEY = "35ca5628-eec1-49e4-a5bc-9cf34081bbbd"
 
 ORG_LD = '{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "株式会社DSK", "url": "SITEURL", "foundingDate": "2012-11", "founder": {"@type": "Person", "name": "五十嵐大輔", "jobTitle": "代表取締役"}, "address": {"@type": "PostalAddress", "postalCode": "104-0031", "addressRegion": "東京都", "addressLocality": "中央区", "streetAddress": "京橋2-7-8 2F", "addressCountry": "JP"}, "areaServed": "JP", "sameAs": ["https://www.dsk-real.co.jp/"]}'
@@ -133,6 +135,10 @@ def render(rel, meta, body, bare):
             f'<meta property="og:url" content="{url}">\n'
             f'{FONTS}\n<link rel="stylesheet" href="{root}assets/style.css">\n'
             f'<script type="application/ld+json">{ORG_LD.replace("SITEURL", SITE_URL)}</script>')
+    if GA_ID and not bare:
+        head += (f'\n<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>'
+                 "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
+                 f"gtag('js',new Date());gtag('config','{GA_ID}');</script>")
     inner = HEADER.format(root=root) + "\n" + body + FOOTER.format(root=root)
     if bare:
         head = head.replace(f'<title>{meta["title"]}</title>', "<title>社長向けFPサイト</title>", 1)
