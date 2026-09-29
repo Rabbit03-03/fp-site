@@ -62,6 +62,21 @@ p { margin: 0; }
 .btn-row { display: flex; flex-wrap: wrap; gap: 12px 16px; }
 
 /* hero */
+.hero { position: relative; overflow: hidden; }
+.hero::before { content: ""; position: absolute; inset: auto -10% -40% auto; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(circle, rgba(13,74,135,.10), transparent 70%); pointer-events: none; }
+.hero .fee-line { margin-top: 14px; font-size: .95rem; color: var(--ink-soft); }
+.hero-visual { margin: 0; background: var(--bg); border: 1px solid var(--rule); border-radius: 16px; padding: 18px 18px 10px; box-shadow: 0 12px 32px rgba(13,74,135,.12); position: relative; }
+.hero-visual svg { display: block; width: 100%; height: auto; }
+.hero-visual figcaption { text-align: center; font-size: .9rem; color: var(--ink-soft); padding-top: 4px; }
+.hero-visual .bar { transform-box: fill-box; transform-origin: 50% 100%; animation: hvGrow 7s ease-out infinite; }
+.hero-visual .b2 { animation-delay: .35s; } .hero-visual .b3 { animation-delay: .7s; } .hero-visual .b4 { animation-delay: 1.05s; } .hero-visual .b5 { animation-delay: 1.4s; }
+.hero-visual .hv-trend { animation: hvFade 7s ease-out infinite; animation-delay: 1.9s; }
+.hero-visual .hv-pop { transform-box: fill-box; transform-origin: 50% 100%; animation: hvPop 7s ease-out infinite; animation-delay: 2.3s; }
+.hero-visual .hv-spark { animation: hvFade 7s ease-out infinite; animation-delay: 2.6s; }
+@keyframes hvGrow { 0% { transform: scaleY(0); } 12% { transform: scaleY(1); } 88% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
+@keyframes hvFade { 0% { opacity: 0; } 10% { opacity: 1; } 80% { opacity: 1; } 95%, 100% { opacity: 0; } }
+@keyframes hvPop { 0% { opacity: 0; transform: scale(.4); } 8% { opacity: 1; transform: scale(1.08); } 12% { transform: scale(1); } 78% { opacity: 1; transform: scale(1); } 92%, 100% { opacity: 0; transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .hero-visual .bar, .hero-visual .hv-trend, .hero-visual .hv-pop, .hero-visual .hv-spark { animation: none; } }
 .hero { background: linear-gradient(180deg, var(--primary-soft), var(--bg)); padding-block: 56px 52px; }
 .hero .wrap { display: grid; gap: 40px; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: center; }
 .eyebrow { font-size: .9rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
