@@ -99,6 +99,7 @@ def main():
     shutil.rmtree(out, ignore_errors=True)
     (out / "assets").mkdir(parents=True)
     shutil.copy(SRC / "assets/style.css", out / "assets/style.css")
+    shutil.copytree(SRC / "assets/img", out / "assets/img")
     pages = []
     for p in sorted(SRC.rglob("*.body.html")):
         rel = str(p.relative_to(SRC)).replace(".body.html", ".html")
