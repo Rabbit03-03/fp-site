@@ -18,6 +18,9 @@ WEB3_KEY = "35ca5628-eec1-49e4-a5bc-9cf34081bbbd"
 ORG_LD = '{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "株式会社DSK", "url": "SITEURL", "foundingDate": "2012-11", "founder": {"@type": "Person", "name": "五十嵐大輔", "jobTitle": "代表取締役"}, "address": {"@type": "PostalAddress", "postalCode": "104-0031", "addressRegion": "東京都", "addressLocality": "中央区", "streetAddress": "京橋2-7-8 2F", "addressCountry": "JP"}, "areaServed": "JP", "sameAs": ["https://www.dsk-real.co.jp/"]}'
 
 LINE_URL = "https://lin.ee/SuhoSRC"
+DL_BANNER = ('<div class="dl-banner"><img src="{{root}}assets/img/checksheet-cover.jpg" alt="" width="84" height="119" loading="lazy">'
+             '<div><p><b>【無料PDF】社長のお金 見直しチェックシート</b><br>21の質問で退職金・保険・相続を点検。登録不要です。</p>'
+             '<a class="btn" href="{{root}}tool/checksheet.html">無料でダウンロード</a></div></div>')
 LINE_CTA = ('<div class="line-cta"><div><b>いきなり相談は、まだ早いかなという方へ</b>'
             '<p>LINEで友だち追加だけでもOKです。気になったことをLINEで気軽に質問できます。</p>'
             '<p class="trust-line">強引な勧誘はしません ・ 全国オンライン対応 ・ 初回60分無料</p></div>'
@@ -199,7 +202,7 @@ CSS_VER = hashlib.md5((SRC / "assets/style.css").read_bytes()).hexdigest()[:8]
 
 def render(rel, meta, body, bare, og=None):
     if rel.startswith("column/") and rel != "column/index.html" and '<aside class="author">' in body:
-        body = body.replace('<aside class="author">', related_html(rel, body) + '    <aside class="author">', 1)
+        body = body.replace('<aside class="author">', related_html(rel, body) + DL_BANNER + '\n    <aside class="author">', 1)
         cat = re.search(r"コラム ／ ([^<]+)</p>", body)
         if cat:
             t = theme_of(cat.group(1).strip())
@@ -213,6 +216,7 @@ def render(rel, meta, body, bare, og=None):
     depth = rel.count("/")
     root = "../" * depth
     body = re.sub(r"\{\{include:([\w-]+)\}\}", lambda m: (SRC / "partials" / (m.group(1) + ".html")).read_text(encoding="utf-8"), body)
+    body = body.replace("{{dl_banner}}", DL_BANNER)
     body = body.replace("{{root}}", root).replace("{{site_url}}", SITE_URL).replace("{{line_cta}}", LINE_CTA)
     body = re.sub(r"\{\{icon:(\w+)\}\}", lambda m: icon_svg(m.group(1)), body)
     def hidden(m):
@@ -287,6 +291,7 @@ def main():
     (out / "assets").mkdir(parents=True)
     shutil.copy(SRC / "assets/style.css", out / "assets/style.css")
     shutil.copytree(SRC / "assets/img", out / "assets/img")
+    shutil.copytree(SRC / "assets/dl", out / "assets/dl")
     for f in SRC.glob("google*.html"):  # Search Console の所有権確認ファイル
         shutil.copy(f, out / f.name)
     pages = []

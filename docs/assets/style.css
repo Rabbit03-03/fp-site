@@ -465,3 +465,13 @@ br.sp { display: none; }
 .next-step { border-top: 1px dashed var(--rule); padding-top: 14px; display: grid; gap: 10px; }
 .ledger.hayami td small { display: block; font-size: .75rem; color: var(--ink-soft); font-weight: 400; }
 .ledger.hayami th, .ledger.hayami td { white-space: nowrap; text-align: center; }
+
+/* 無料PDF */
+.dl-box{display:flex;gap:24px;align-items:flex-start;margin:20px 0 28px}
+.dl-box img{width:200px;height:auto;border:1px solid #d7e0ea;box-shadow:0 6px 18px rgba(13,40,80,.15);border-radius:4px;flex:none}
+.dl-box>div{flex:1;min-width:0}
+@media (max-width:600px){.dl-box{flex-direction:column;align-items:center}.dl-box img{width:170px}.dl-box>div{width:100%}}
+.dl-banner{display:flex;gap:16px;align-items:center;background:#fff7ef;border:2px solid #f08a24;border-radius:12px;padding:16px 18px;margin:24px 0}
+.dl-banner img{width:84px;height:auto;border:1px solid #e5d3c0;flex:none}
+.dl-banner p{margin:0 0 8px}
+.dl-banner .btn{white-space:nowrap;padding:10px 18px;font-size:.95rem}
