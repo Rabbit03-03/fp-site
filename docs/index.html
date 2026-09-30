@@ -37,7 +37,7 @@
         <p class="lead">退職金・法人保険・相続の準備を、保険会社に属さない独立系FPが一緒に設計します。</p>
         <div class="btn-row">
           <a class="btn" href="yoyaku.html">無料相談を予約する</a>
-          <a class="btn ghost light" href="tool/shindan.html">1分で無料診断</a>
+          <a class="btn ghost light" href="#shindan">1分で無料診断</a>
         </div>
         <ul class="badges">
           <li><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>初回オンライン60分 無料</li>
@@ -49,7 +49,7 @@
         <img src="assets/img/daihyo.jpg" alt="株式会社DSK 代表取締役 五十嵐大輔" width="640" height="800" fetchpriority="high">
         <p class="float-chip c1"><b data-count="3000">3,000</b>名以上の<br>ご相談実績</p>
         <p class="float-chip c2">元ホテルマン<br>25歳で起業した経営者</p>
-        <p class="hero-name"><small>ご相談は代表が担当します</small>代表取締役 五十嵐 大輔<small>AFP・相続診断士・がんファイナンスアドバイザー</small></p>
+        <p class="hero-name"><small>ご相談は代表が担当します</small>代表取締役 五十嵐 大輔</p>
       </div>
     </div>
   </div>
@@ -87,10 +87,103 @@
     </div>
   </section>
 
-  <section class="seminar-band">
-    <div class="wrap">
-      <div><p class="eyebrow">無料診断・1分</p><h2>相談したほうがいい？ 12の質問で分かります</h2><p>「はい・いいえ」で答えるだけ。見直すべきテーマが色で分かります。</p></div>
-      <a class="btn" href="tool/shindan.html">無料で診断する</a>
+  <section id="shindan" class="shindan-sec">
+    <div class="wrap narrow">
+      <div class="sec-head"><p class="eyebrow">無料診断・1分</p><h2>相談したほうがいい？<br>12の質問で分かります</h2><p>「はい・いいえ」で答えるだけ。見直すべきテーマが色で分かります。回答はどこにも送信されません。</p></div>
+          <form class="form sim quiz" id="quiz" onsubmit="return false">
+      <p class="quiz-progress" aria-live="polite"><span id="done">0</span> / 12 問に回答</p>
+      <div id="qs"></div>
+      <div class="btn-row center"><button type="button" class="btn" id="go">結果を見る</button></div>
+      <p class="note center" id="warn" hidden>まだ答えていない質問があります。</p>
+    </form>
+
+    <section class="sim-result quiz-result" id="result" hidden aria-live="polite">
+      <p class="eyebrow">診断結果</p>
+      <h2 id="rTitle"></h2>
+      <p id="rText"></p>
+      <div class="quiz-bars" id="rBars"></div>
+      <div id="rRead"></div>
+      <div class="btn-row center">
+        <a class="btn" id="rBook" href="yoyaku.html">この結果で無料相談を予約する</a>
+        <button type="button" class="btn ghost" id="again">もう一度やり直す</button>
+      </div>
+      <p class="note">診断は一般的な目安です。会社ごとの最適な方法は、決算書や加入中の保険を見て判断します。</p>
+    </section>
+
+<script>
+(function () {
+  var ROOT = "";
+  var THEMES = [
+    { key: "yakuin", name: "社長ご自身の退職金", qs: [
+      "ご自身の退職金を、いくら・どうやって準備するか決まっていない",
+      "役員退職金規程がない、または何年も見直していない",
+      "利益が出た年は、決算の直前に慌てて節税を考えている"],
+      links: [["column/houjin-nisa.html", "法人NISAとは？利益を社長の退職金に変えるしくみ"], ["column/yakuin-taishokukin-kitei.html", "役員退職金規程の作り方"], ["tool/taishokukin.html", "退職金の手取りシミュレーター"]] },
+    { key: "staff", name: "従業員の退職金・福利厚生", qs: [
+      "従業員の退職金制度がない、または中身をよく知らない",
+      "採用や定着のために、福利厚生を充実させたい",
+      "従業員の退職が重なったとき、退職金を払えるか分からない"],
+      links: [["column/taishokukin-seido.html", "従業員の退職金制度の比較"], ["column/kyousai-hikaku.html", "中退共・小規模企業共済などの比較"]] },
+    { key: "hoken", name: "法人保険の見直し", qs: [
+      "会社で入っている保険の目的と、解約したときの戻り額を説明できない",
+      "保険は付き合いや、勧められるままに入った",
+      "社長に万一のことがあったとき、借入金の返済や運転資金が足りるか分からない"],
+      links: [["column/jigyou-hoshou.html", "社長の万一に備える事業保障の考え方"], ["houjin.html", "法人保険のセカンドオピニオン（診断のみもOK）"]] },
+    { key: "souzoku", name: "相続・事業承継", qs: [
+      "自社株の評価額がいくらか知らない",
+      "後継者や会社の将来について、家族とまだ話せていない",
+      "ご自身の相続税がどのくらいかかるか把握していない"],
+      links: [["column/seimeihoken-souzoku.html", "生命保険を使った相続対策"]] }
+  ];
+  var qs = document.getElementById("qs"), n = 0, html = "";
+  THEMES.forEach(function (t, ti) {
+    html += '<fieldset><legend>' + (ti + 1) + '. ' + t.name + '</legend>';
+    t.qs.forEach(function (q, qi) {
+      n++;
+      var id = "q" + ti + "_" + qi;
+      html += '<div class="quiz-q"><p><b>Q' + n + '</b> ' + q + '</p><div class="yn">' +
+        '<label><input type="radio" name="' + id + '" value="1"><span>はい</span></label>' +
+        '<label><input type="radio" name="' + id + '" value="0"><span>いいえ</span></label></div></div>';
+    });
+    html += '</fieldset>';
+  });
+  qs.innerHTML = html;
+  var form = document.getElementById("quiz"), result = document.getElementById("result");
+  function answered() { return form.querySelectorAll("input:checked").length; }
+  form.addEventListener("change", function () { document.getElementById("done").textContent = answered(); document.getElementById("warn").hidden = true; });
+
+  document.getElementById("go").addEventListener("click", function () {
+    if (answered() < 12) { document.getElementById("warn").hidden = false; var first = null;
+      form.querySelectorAll(".quiz-q").forEach(function (q) { if (!first && !q.querySelector("input:checked")) first = q; });
+      if (first) first.scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+    var total = 0, scores = THEMES.map(function (t, ti) {
+      var s = 0; t.qs.forEach(function (_, qi) { var c = form.querySelector('input[name="q' + ti + '_' + qi + '"]:checked'); if (c && c.value === "1") s++; });
+      total += s; return s; });
+    var title, text;
+    if (total >= 6) { title = "早めのご相談をおすすめします（" + total + "／12）"; text = "当てはまる項目が多く、準備が後回しになっている可能性があります。対策は時間があるほど選べる方法が増えます。まずは一度、状況を整理しましょう。"; }
+    else if (total >= 3) { title = "一度、点検しておくと安心です（" + total + "／12）"; text = "いくつか気になるテーマがあります。下の色が濃いテーマから、記事で確認するか、無料相談で優先順位をつけてみてください。"; }
+    else { title = "大きな心配は少なそうです（" + total + "／12）"; text = "よく準備ができています。制度や税制は変わるため、数年に一度の見直しがおすすめです。"; }
+    document.getElementById("rTitle").textContent = title;
+    document.getElementById("rText").textContent = text;
+    var bars = "", read = "", hit = [];
+    THEMES.forEach(function (t, i) {
+      var s = scores[i], lv = s >= 2 ? "high" : s === 1 ? "mid" : "low";
+      bars += '<div class="qb ' + lv + '"><span class="qb-name">' + t.name + '</span><span class="qb-track"><span style="width:' + (s / 3 * 100) + '%"></span></span><span class="qb-num">' + s + '/3</span></div>';
+      if (s > 0) { hit.push(t.name);
+        read += '<div class="qr"><h3>' + t.name + 'を見直すなら</h3><ul>' + t.links.map(function (l) { return '<li><a href="' + ROOT + l[0] + '">' + l[1] + '</a></li>'; }).join("") + '</ul></div>'; }
+    });
+    document.getElementById("rBars").innerHTML = bars;
+    document.getElementById("rRead").innerHTML = read;
+    document.getElementById("rBook").href = ROOT + "yoyaku.html?shindan=" + encodeURIComponent(total + "/12" + (hit.length ? "（" + hit.join("・") + "）" : ""));
+    result.hidden = false;
+    result.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  document.getElementById("again").addEventListener("click", function () {
+    form.reset(); document.getElementById("done").textContent = 0; result.hidden = true; form.scrollIntoView({ behavior: "smooth" });
+  });
+})();
+</script>
+
     </div>
   </section>
 

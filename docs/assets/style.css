@@ -438,3 +438,11 @@ br.sp { display: none; }
 @media (prefers-reduced-motion: reduce) { .hero-dark .h-q, .hero-answer, .hero-dark .lead, .hero-dark .btn-row, .float-chip, .hero-glow span { animation: none; } }
 .hero-dark h1 { font-size: clamp(2rem, 5vw, 3.3rem); }
 @media (max-width: 860px) { .hero-name small:last-child { display: none; } .hero-name { padding: 8px 18px; font-size: .95rem; } }
+/* 写真を小さめに（09-30） */
+@media (min-width: 861px) { .hero-dark .wrap { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); } }
+.hero-photo { width: min(100%, 300px); }
+@media (max-width: 860px) { .hero-photo { width: min(62%, 240px); } .float-chip.c1 { left: -30%; } .float-chip.c2 { right: -30%; } }
+/* トップに置いた無料診断 */
+.wrap.narrow { max-width: 900px; }
+.shindan-sec .quiz-result { margin-top: 24px; }
+@media (min-width: 761px) { .quiz fieldset { grid-template-columns: repeat(3, minmax(0, 1fr)); } .quiz fieldset legend { grid-column: 1 / -1; } .quiz-q { align-content: space-between; } }
