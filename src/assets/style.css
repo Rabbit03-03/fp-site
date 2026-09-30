@@ -344,3 +344,17 @@ main > section.seminar-band { background: linear-gradient(135deg, #fff6f0, #fff)
 .article .col-list { padding-left: 0; }
 .steps.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 760px) { .steps.four { grid-template-columns: minmax(0, 1fr); } }
+
+/* 代表プロフィール */
+.profile-head { margin: 8px 0 12px; }
+.timeline { list-style: none; margin: 0; padding: 0 0 0 22px; border-left: 3px solid var(--primary-soft); display: grid; gap: 24px; }
+.timeline li { position: relative; background: var(--bg); border: 1px solid var(--rule); border-radius: 12px; padding: 20px 22px; display: grid; gap: 10px; }
+.timeline li::before { content: ""; position: absolute; left: -32px; top: 26px; width: 15px; height: 15px; border-radius: 50%; background: var(--primary); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--primary); }
+.timeline h3 { font-size: 1.15rem; margin: 0; }
+.timeline p { margin: 0; }
+.tl-tag { justify-self: start; font-size: .8rem; font-weight: 700; color: #fff; background: var(--primary); padding: 2px 12px; border-radius: 999px; }
+.tl-point { background: var(--primary-soft); border-radius: 8px; padding: 10px 14px; font-size: .95rem; }
+.rep-points { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.rep-points li { border-left: 4px solid var(--primary); background: var(--bg); padding: 10px 14px; border-radius: 0 8px 8px 0; }
+.rep-points strong { display: block; color: var(--primary); }
+@media (max-width: 720px) { .profile-head { grid-template-columns: 1fr; gap: 20px; } .profile-head .rep-photo { max-width: 260px; } }

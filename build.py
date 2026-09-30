@@ -32,7 +32,7 @@ HEADER = """<header class="site-head"><div class="wrap">
     <a href="{root}houjin.html">法人のご相談</a>
     <a href="{root}column/houjin-nisa.html">法人NISA</a>
     <a href="{root}column/index.html">コラム</a>
-    <a href="{root}index.html#profile">代表紹介</a>
+    <a href="{root}profile.html">代表紹介</a>
     <a href="{root}company.html">会社概要</a>
     <a href="{root}yoyaku.html">無料相談</a>
   </nav>
