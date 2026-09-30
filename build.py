@@ -190,6 +190,25 @@ def render(rel, meta, body, bare, og=None):
             + '<meta property="og:site_name" content="株式会社DSK">\n<meta property="og:locale" content="ja_JP">\n'
             + f'{FONTS}\n<link rel="stylesheet" href="{root}assets/style.css?v={CSS_VER}">\n'
             f'<script type="application/ld+json">{ORG_LD.replace("SITEURL", SITE_URL)}</script>')
+    if rel.startswith("column/") and rel != "column/index.html":
+        import json
+        date = re.search(r'<time datetime="([0-9-]+)"', body)
+        cat = re.search(r"コラム ／ ([^<]+)</p>", body)
+        art = {"@context": "https://schema.org", "@type": "BlogPosting", "headline": og_title(meta),
+               "description": meta["description"], "mainEntityOfPage": url,
+               "author": {"@type": "Person", "name": "五十嵐 大輔", "jobTitle": "代表取締役・AFP", "url": SITE_URL + "profile.html"},
+               "publisher": {"@type": "Organization", "name": "株式会社DSK", "url": SITE_URL}}
+        if date:
+            art["datePublished"] = art["dateModified"] = date.group(1)
+        if og:
+            art["image"] = SITE_URL + og
+        crumbs = [("トップ", SITE_URL), ("コラム", SITE_URL + "column/")]
+        if cat:
+            crumbs.append((cat.group(1).strip(), None))
+        crumbs.append((og_title(meta), url))
+        bc = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            dict({"@type": "ListItem", "position": i + 1, "name": n}, **({"item": u} if u else {})) for i, (n, u) in enumerate(crumbs)]}
+        head += "\n" + "".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>' for x in (art, bc))
     if GA_ID and not bare:
         head += (f'\n<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>'
                  "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"

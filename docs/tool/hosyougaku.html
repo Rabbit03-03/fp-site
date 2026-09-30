@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>事業保障の必要保障額シミュレーター（社長に万一のとき会社に必要なお金）｜株式会社DSK</title>
+<meta name="description" content="借入の残高、月の固定費、役員報酬、預金、今の保障額を入れるだけで、社長に万一のことがあったときに会社に必要なお金（必要保障額）をその場で計算します。入力内容はどこにも送信されません。">
+<link rel="canonical" href="https://rabbit03-03.github.io/fp-site/tool/hosyougaku.html">
+<meta property="og:title" content="事業保障の必要保障額シミュレーター（社長に万一のとき会社に必要なお金）｜株式会社DSK">
+<meta property="og:description" content="借入の残高、月の固定費、役員報酬、預金、今の保障額を入れるだけで、社長に万一のことがあったときに会社に必要なお金（必要保障額）をその場で計算します。入力内容はどこにも送信されません。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rabbit03-03.github.io/fp-site/tool/hosyougaku.html">
+<meta property="og:image" content="https://rabbit03-03.github.io/fp-site/assets/og/tool_hosyougaku.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:site_name" content="株式会社DSK">
+<meta property="og:locale" content="ja_JP">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/style.css?v=395cc13d">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "株式会社DSK", "url": "https://rabbit03-03.github.io/fp-site/", "foundingDate": "2012-11", "founder": {"@type": "Person", "name": "五十嵐大輔", "jobTitle": "代表取締役"}, "address": {"@type": "PostalAddress", "postalCode": "104-0031", "addressRegion": "東京都", "addressLocality": "中央区", "streetAddress": "京橋2-7-8 2F", "addressCountry": "JP"}, "areaServed": "JP", "sameAs": ["https://www.dsk-real.co.jp/"]}</script>
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="brand" href="../index.html"><b>株式会社DSK</b><small>東京の独立系FP ／ 全国の社長のご相談</small></a>
+  <nav class="nav" aria-label="メイン">
+    <a href="../houjin.html">法人のご相談</a>
+    <a href="../column/houjin-nisa.html">法人NISA</a>
+    <a href="../column/index.html">コラム</a>
+    <a href="../profile.html">代表紹介</a>
+    <a href="../company.html">会社概要</a>
+    <a href="../yoyaku.html">無料相談</a>
+  </nav>
+</div></header>
+<main>
+  <div class="article">
+    <p class="crumbs"><a href="../index.html">トップ</a> ／ 必要保障額シミュレーター</p>
+    <h1>事業保障の必要保障額シミュレーター</h1>
+    <p>社長に万一のことがあったとき、会社にいくら必要かを計算します。入力した内容はどこにも送信されません。</p>
+
+    <form class="form sim" id="sim" onsubmit="return false">
+      <fieldset>
+        <legend>1. 会社の数字（万円）</legend>
+        <div class="field-row">
+          <div class="field"><label for="debt">借入金の残高</label><input id="debt" type="number" inputmode="decimal" min="0" step="100" value="8000"></div>
+          <div class="field"><label for="fixed">月の固定費（人件費・家賃など）</label><input id="fixed" type="number" inputmode="decimal" min="0" step="10" value="500"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="months">運転資金は何か月分見込むか</label>
+            <select id="months"><option value="3">3か月分</option><option value="6" selected>6か月分</option><option value="12">12か月分</option></select></div>
+          <div class="field"><label for="cash">すぐ使える預金</label><input id="cash" type="number" inputmode="decimal" min="0" step="100" value="2000"></div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>2. 社長の数字</legend>
+        <div class="field-row three">
+          <div class="field"><label for="pay">役員報酬の月額（万円）</label><input id="pay" type="number" inputmode="decimal" min="0" step="10" value="100"></div>
+          <div class="field"><label for="years">在任年数（年）</label><input id="years" type="number" inputmode="numeric" min="0" max="60" step="1" value="20"></div>
+          <div class="field"><label for="ratio">功績倍率（例）</label>
+            <select id="ratio"><option value="1.5">1.5倍</option><option value="2" selected>2.0倍</option><option value="2.5">2.5倍</option><option value="3">3.0倍</option></select></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="now">今入っている保険の死亡保障（会社受取、万円）</label><input id="now" type="number" inputmode="decimal" min="0" step="100" value="0"></div>
+        </div>
+      </fieldset>
+    </form>
+
+    <section class="sim-result" aria-live="polite">
+      <div class="sim-head">
+        <div><span>必要なお金の合計</span><b id="rNeed">―</b></div>
+        <div><span>準備済み</span><b id="rHave">―</b></div>
+        <div><span>不足額（必要保障額）</span><b id="rGap">―</b></div>
+      </div>
+      <div class="table-scroll">
+        <table class="ledger">
+          <tbody>
+            <tr><th scope="row">借入金の返済</th><td class="n" id="tDebt"></td></tr>
+            <tr><th scope="row">運転資金</th><td class="n" id="tRun"></td></tr>
+            <tr><th scope="row">死亡退職金（報酬月額 × 在任年数 × 功績倍率）</th><td class="n" id="tRet"></td></tr>
+            <tr><th scope="row">弔慰金（業務外：報酬月額 × 6か月）</th><td class="n" id="tCho"></td></tr>
+            <tr><th scope="row">預金と今の保障</th><td class="n" id="tHave"></td></tr>
+            <tr class="total"><th scope="row">不足額（必要保障額）</th><td class="n" id="tGap"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" id="rNote"></p>
+    </section>
+
+    <div class="inline-cta">
+      <p>御社の決算書と借入の残高で、保障の過不足と保険料の見直しを無料で確認します。</p>
+      <div class="btn-row"><a class="btn" href="../yoyaku.html">無料相談を予約する</a><a class="btn ghost" href="../column/hoken-second-opinion.html">保険の見直し方を読む</a></div>
+    </div>
+
+    <div class="line-cta"><div><b>いきなり相談は、まだ早いかなという方へ</b><p>LINEで友だち追加だけでもOKです。気になったことをLINEで気軽に質問できます。</p></div><a class="btn line" href="https://lin.ee/SuhoSRC" rel="noopener">LINEで友だち追加</a></div>
+
+    <h2>計算のしかた</h2>
+    <p>会社に必要なお金を3つに分けて足し、預金と今の保障を引きます。考え方は<a href="../column/jigyou-hoshou.html">事業保障の必要保障額の記事</a>でくわしく解説しています。</p>
+    <ol class="scheme compact">
+      <li><span class="step-no">1</span><b>借入の返済</b><small>残高の全額</small></li>
+      <li><span class="step-no">2</span><b>運転資金</b><small>固定費 × 月数</small></li>
+      <li><span class="step-no">3</span><b>退職金・弔慰金</b><small>ご遺族へ</small></li>
+      <li class="goal"><span class="step-no">4</span><b>準備分を引く</b><small>預金と今の保険</small></li>
+    </ol>
+    <p class="note">功績倍率は例です。実際は役員退職金規程で決めます。会社が受け取った保険金は原則として益金になり法人税の対象になるため、税金分まで見込むかは顧問税理士とご確認ください。内容は2026年9月時点のものです。</p>
+
+    <h2>よくある質問</h2>
+    <div class="faq">
+      <details><summary>運転資金は何か月分見込めばいいですか？</summary><p>固定費の6か月分から1年分が一つの目安です。社長がいなくなってから立て直すまでにかかる期間で考えます。</p></details>
+      <details><summary>借入が減ったら保険も減らせますか？</summary><p>必要保障額が下がれば、保障を減らして保険料を下げられることがあります。解約や減額の前に、戻り額や税金への影響を確認しましょう。</p></details>
+      <details><summary>どのくらいの頻度で見直せばいいですか？</summary><p>決算のたびに1回、ほかに借入や役員報酬が変わったときに見直すのがおすすめです。</p></details>
+    </div>
+  </div>
+</main>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"運転資金は何か月分見込めばいいですか？","acceptedAnswer":{"@type":"Answer","text":"固定費の6か月分から1年分が一つの目安です。社長がいなくなってから立て直すまでにかかる期間で考えます。"}},{"@type":"Question","name":"借入が減ったら保険も減らせますか？","acceptedAnswer":{"@type":"Answer","text":"必要保障額が下がれば、保障を減らして保険料を下げられることがあります。解約や減額の前に、戻り額や税金への影響を確認しましょう。"}},{"@type":"Question","name":"どのくらいの頻度で見直せばいいですか？","acceptedAnswer":{"@type":"Answer","text":"決算のたびに1回、ほかに借入や役員報酬が変わったときに見直すのがおすすめです。"}}]}</script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var man = function (n) { return Math.round(n).toLocaleString("ja-JP") + "万円"; };
+  function num(id) { var v = parseFloat($(id).value); return isFinite(v) && v > 0 ? v : 0; }
+  function calc() {
+    var debt = num("debt"), run = num("fixed") * +$("months").value;
+    var pay = num("pay"), ret = pay * num("years") * +$("ratio").value, cho = pay * 6;
+    var need = debt + run + ret + cho, have = num("cash") + num("now"), gap = Math.max(0, need - have);
+    $("rNeed").textContent = man(need); $("rHave").textContent = man(have); $("rGap").textContent = man(gap);
+    $("tDebt").textContent = man(debt); $("tRun").textContent = man(run); $("tRet").textContent = man(ret);
+    $("tCho").textContent = man(cho); $("tHave").textContent = "−" + man(have); $("tGap").textContent = man(gap);
+    $("rNote").textContent = gap > 0 ? "この額が、保険などで準備しておきたい目安です。" : "今の預金と保障で、必要なお金をまかなえる計算です。保障が多すぎないかも確認しましょう。";
+  }
+  $("sim").addEventListener("input", calc);
+  $("sim").addEventListener("change", calc);
+  calc();
+})();
+</script>
+<footer class="site-foot"><div class="wrap">
+  <p><b>株式会社DSK</b>　〒104-0031 東京都中央区京橋2-7-8 2F　全国オンライン対応／福岡は毎月1回対面</p>
+  <p class="foot-links"><a href="../company.html">会社概要</a><a href="../houjin.html#faq">よくあるご質問</a><a href="https://www.dsk-real.co.jp/blank-8" rel="noopener">個人情報保護方針</a><a href="../seminar.html">無料セミナー</a><a href="https://lin.ee/SuhoSRC" rel="noopener">LINE公式アカウント</a><a href="https://www.dsk-real.co.jp/" rel="noopener">個人のお客様向けサイト</a></p>
+  <p>当サイトの情報は一般的な内容です。個別の税務判断は税理士にご確認ください。</p>
+  <p>&copy; 2026 株式会社DSK</p>
+</div></footer>
+<div class="mobile-bar"><a class="btn" href="../yoyaku.html">無料相談を予約</a></div>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>相続税かんたん試算（社長向け・生命保険と死亡退職金の非課税枠つき）｜株式会社DSK</title>
+<meta name="description" content="財産の合計、生命保険金、死亡退職金、家族の人数を入れるだけで、相続税の総額と基礎控除、生命保険・死亡退職金の非課税枠をその場で計算します。配偶者が法定相続分どおり受け取った場合の納税額の目安も表示。入力内容はどこにも送信されません。">
+<link rel="canonical" href="https://rabbit03-03.github.io/fp-site/tool/souzokuzei.html">
+<meta property="og:title" content="相続税かんたん試算（社長向け・生命保険と死亡退職金の非課税枠つき）｜株式会社DSK">
+<meta property="og:description" content="財産の合計、生命保険金、死亡退職金、家族の人数を入れるだけで、相続税の総額と基礎控除、生命保険・死亡退職金の非課税枠をその場で計算します。配偶者が法定相続分どおり受け取った場合の納税額の目安も表示。入力内容はどこにも送信されません。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rabbit03-03.github.io/fp-site/tool/souzokuzei.html">
+<meta property="og:image" content="https://rabbit03-03.github.io/fp-site/assets/og/tool_souzokuzei.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:site_name" content="株式会社DSK">
+<meta property="og:locale" content="ja_JP">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/style.css?v=395cc13d">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "株式会社DSK", "url": "https://rabbit03-03.github.io/fp-site/", "foundingDate": "2012-11", "founder": {"@type": "Person", "name": "五十嵐大輔", "jobTitle": "代表取締役"}, "address": {"@type": "PostalAddress", "postalCode": "104-0031", "addressRegion": "東京都", "addressLocality": "中央区", "streetAddress": "京橋2-7-8 2F", "addressCountry": "JP"}, "areaServed": "JP", "sameAs": ["https://www.dsk-real.co.jp/"]}</script>
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="brand" href="../index.html"><b>株式会社DSK</b><small>東京の独立系FP ／ 全国の社長のご相談</small></a>
+  <nav class="nav" aria-label="メイン">
+    <a href="../houjin.html">法人のご相談</a>
+    <a href="../column/houjin-nisa.html">法人NISA</a>
+    <a href="../column/index.html">コラム</a>
+    <a href="../profile.html">代表紹介</a>
+    <a href="../company.html">会社概要</a>
+    <a href="../yoyaku.html">無料相談</a>
+  </nav>
+</div></header>
+<main>
+  <div class="article">
+    <p class="crumbs"><a href="../index.html">トップ</a> ／ 相続税かんたん試算</p>
+    <h1>相続税かんたん試算</h1>
+    <p>財産と家族の人数を入れるだけで、相続税の目安を計算します。入力した内容はどこにも送信されません。</p>
+
+    <form class="form sim" id="sim" onsubmit="return false">
+      <fieldset>
+        <legend>1. 財産を入れる（万円）</legend>
+        <div class="field-row">
+          <div class="field"><label for="assets">財産の合計（自社株・不動産・預金など。借入などの債務を引いた額）</label><input id="assets" type="number" inputmode="decimal" min="0" step="100" value="30000"></div>
+          <div class="field"><label for="ins">生命保険金（亡くなったときに家族が受け取る額）</label><input id="ins" type="number" inputmode="decimal" min="0" step="100" value="3000"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="ret">死亡退職金（会社から家族に支払う額）</label><input id="ret" type="number" inputmode="decimal" min="0" step="100" value="5000"></div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>2. 家族を入れる</legend>
+        <div class="checks">
+          <label><input type="radio" name="spouse" value="1" checked> 配偶者がいる</label>
+          <label><input type="radio" name="spouse" value="0"> 配偶者はいない</label>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="kids">子どもの人数</label>
+            <select id="kids"><option value="1">1人</option><option value="2" selected>2人</option><option value="3">3人</option><option value="4">4人</option><option value="5">5人</option></select></div>
+        </div>
+      </fieldset>
+    </form>
+
+    <section class="sim-result" aria-live="polite">
+      <div class="sim-head">
+        <div><span>相続税の総額</span><b id="rTotal">―</b></div>
+        <div><span>家族の納税額の目安</span><b id="rPay">―</b></div>
+        <div><span>非課税になった額</span><b id="rFree">―</b></div>
+      </div>
+      <p class="note" id="rPayNote"></p>
+      <div class="table-scroll">
+        <table class="ledger">
+          <tbody>
+            <tr><th scope="row">財産の合計</th><td class="n" id="tAssets"></td></tr>
+            <tr><th scope="row">生命保険金（非課税枠を引いた額）</th><td class="n" id="tIns"></td></tr>
+            <tr><th scope="row">死亡退職金（非課税枠を引いた額）</th><td class="n" id="tRet"></td></tr>
+            <tr><th scope="row">課税価格の合計</th><td class="n" id="tPrice"></td></tr>
+            <tr><th scope="row">基礎控除</th><td class="n" id="tBasic"></td></tr>
+            <tr><th scope="row">課税遺産総額</th><td class="n" id="tBase"></td></tr>
+            <tr class="total"><th scope="row">相続税の総額</th><td class="n" id="tTotal"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="inline-cta">
+      <p>自社株の評価や、生命保険・退職金を使った納税資金の準備まで、無料で一緒に試算します。</p>
+      <div class="btn-row"><a class="btn" href="../yoyaku.html">無料相談を予約する</a><a class="btn ghost" href="../tool/shindan.html">1分で無料診断</a></div>
+    </div>
+
+    <div class="line-cta"><div><b>いきなり相談は、まだ早いかなという方へ</b><p>LINEで友だち追加だけでもOKです。気になったことをLINEで気軽に質問できます。</p></div><a class="btn line" href="https://lin.ee/SuhoSRC" rel="noopener">LINEで友だち追加</a></div>
+
+    <h2>計算のしかた</h2>
+    <ol class="scheme compact">
+      <li><span class="step-no">1</span><b>財産を合計</b><small>保険・退職金は非課税枠を引く</small></li>
+      <li><span class="step-no">2</span><b>基礎控除を引く</b><small>3,000万円＋600万円×人数</small></li>
+      <li><span class="step-no">3</span><b>法定相続分で分ける</b><small>分けてから税率をかける</small></li>
+      <li class="goal"><span class="step-no">4</span><b>合計が総額</b><small>実際の取り分で負担</small></li>
+    </ol>
+    <div class="table-scroll">
+      <table class="ledger">
+        <thead><tr><th scope="col">法定相続分に応ずる取得金額</th><th scope="col">税率</th><th scope="col">控除額</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">1,000万円以下</th><td>10%</td><td>なし</td></tr>
+          <tr><th scope="row">3,000万円以下</th><td>15%</td><td>50万円</td></tr>
+          <tr><th scope="row">5,000万円以下</th><td>20%</td><td>200万円</td></tr>
+          <tr><th scope="row">1億円以下</th><td>30%</td><td>700万円</td></tr>
+          <tr><th scope="row">2億円以下</th><td>40%</td><td>1,700万円</td></tr>
+          <tr><th scope="row">3億円以下</th><td>45%</td><td>2,700万円</td></tr>
+          <tr><th scope="row">6億円以下</th><td>50%</td><td>4,200万円</td></tr>
+          <tr><th scope="row">6億円超</th><td>55%</td><td>7,200万円</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li>生命保険金と死亡退職金は、それぞれ「500万円 × 法定相続人の数」まで相続税がかかりません（相続人が受け取る場合）。</li>
+      <li>配偶者は、受け取った財産が1億6,000万円までか、法定相続分までなら、配偶者の税額軽減で相続税がかかりません（申告が必要です）。</li>
+    </ul>
+    <p class="note">出典：国税庁 タックスアンサー <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/sozoku/4152.htm" rel="noopener">No.4152</a>・<a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/sozoku/4155.htm" rel="noopener">No.4155</a>・<a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/sozoku/4158.htm" rel="noopener">No.4158</a>。この試算は、相続人が配偶者と子どもだけの場合の概算です。自社株や不動産の評価、小規模宅地等の特例、生前贈与の加算、2割加算などは含みません。実際の税額は税理士にご確認ください。税制は2026年9月時点のものです。</p>
+
+    <h2>よくある質問</h2>
+    <div class="faq">
+      <details><summary>自社株はいくらで入れればいいですか？</summary><p>決算書の純資産の額を仮に入れると、おおまかな目安になります。実際の評価は会社の規模や利益で変わります。くわしくは<a href="../column/jisha-kabu-hyouka.html">自社株の評価の記事</a>をご覧ください。</p></details>
+      <details><summary>「家族の納税額の目安」とは何ですか？</summary><p>配偶者が法定相続分どおりに受け取り、配偶者の税額軽減を使った場合に、家族全体で納める額の目安です。配偶者がいない場合は、相続税の総額と同じです。</p></details>
+      <details><summary>生命保険で相続税を減らせますか？</summary><p>非課税枠の分だけ、相続税の対象になる額が減ります。納税資金をすぐ用意できる点でも役立ちます。<a href="../column/seimeihoken-souzoku.html">生命保険を使った相続対策の記事</a>で解説しています。</p></details>
+    </div>
+  </div>
+</main>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"自社株はいくらで入れればいいですか？","acceptedAnswer":{"@type":"Answer","text":"決算書の純資産の額を仮に入れると、おおまかな目安になります。実際の評価は会社の規模や利益で変わります。"}},{"@type":"Question","name":"「家族の納税額の目安」とは何ですか？","acceptedAnswer":{"@type":"Answer","text":"配偶者が法定相続分どおりに受け取り、配偶者の税額軽減を使った場合に、家族全体で納める額の目安です。配偶者がいない場合は、相続税の総額と同じです。"}},{"@type":"Question","name":"生命保険で相続税を減らせますか？","acceptedAnswer":{"@type":"Answer","text":"生命保険金は「500万円×法定相続人の数」まで相続税がかからないため、その分だけ相続税の対象になる額が減ります。"}}]}</script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var man = function (n) { return Math.round(n).toLocaleString("ja-JP") + "万円"; };
+  var T = [[1000, .10, 0], [3000, .15, 50], [5000, .20, 200], [10000, .30, 700], [20000, .40, 1700], [30000, .45, 2700], [60000, .50, 4200], [Infinity, .55, 7200]];
+  function rate(x) { for (var i = 0; i < T.length; i++) if (x <= T[i][0]) return Math.max(0, x * T[i][1] - T[i][2]); }
+  function num(id) { var v = parseFloat($(id).value); return isFinite(v) && v > 0 ? v : 0; }
+  function calc() {
+    var spouse = document.querySelector('input[name="spouse"]:checked').value === "1";
+    var kids = +$("kids").value, n = kids + (spouse ? 1 : 0);
+    var assets = num("assets"), ins = num("ins"), ret = num("ret");
+    var insT = Math.max(0, ins - 500 * n), retT = Math.max(0, ret - 500 * n);
+    var price = assets + insT + retT, basic = 3000 + 600 * n, base = Math.max(0, price - basic);
+    var shares = [];
+    if (spouse) { shares.push(.5); for (var i = 0; i < kids; i++) shares.push(.5 / kids); }
+    else { for (var j = 0; j < kids; j++) shares.push(1 / kids); }
+    var total = 0;
+    shares.forEach(function (s) { total += rate(Math.floor(base * s * 10) / 10); });
+    total = Math.floor(total * 100) / 100;
+    var pay = spouse ? total / 2 : total;
+    $("rTotal").textContent = man(total);
+    $("rPay").textContent = man(pay);
+    $("rFree").textContent = man((ins - insT) + (ret - retT));
+    $("rPayNote").textContent = spouse
+      ? "配偶者が法定相続分（2分の1）を受け取り、配偶者の税額軽減を使った場合です。配偶者の次の相続（二次相続）で税金がかかる点にご注意ください。"
+      : "法定相続人は子ども" + kids + "人です。";
+    $("tAssets").textContent = man(assets);
+    $("tIns").textContent = man(insT) + "（非課税 " + man(ins - insT) + "）";
+    $("tRet").textContent = man(retT) + "（非課税 " + man(ret - retT) + "）";
+    $("tPrice").textContent = man(price);
+    $("tBasic").textContent = "−" + man(basic) + "（3,000万円＋600万円×" + n + "人）";
+    $("tBase").textContent = man(base);
+    $("tTotal").textContent = man(total);
+  }
+  $("sim").addEventListener("input", calc);
+  $("sim").addEventListener("change", calc);
+  calc();
+})();
+</script>
+<footer class="site-foot"><div class="wrap">
+  <p><b>株式会社DSK</b>　〒104-0031 東京都中央区京橋2-7-8 2F　全国オンライン対応／福岡は毎月1回対面</p>
+  <p class="foot-links"><a href="../company.html">会社概要</a><a href="../houjin.html#faq">よくあるご質問</a><a href="https://www.dsk-real.co.jp/blank-8" rel="noopener">個人情報保護方針</a><a href="../seminar.html">無料セミナー</a><a href="https://lin.ee/SuhoSRC" rel="noopener">LINE公式アカウント</a><a href="https://www.dsk-real.co.jp/" rel="noopener">個人のお客様向けサイト</a></p>
+  <p>当サイトの情報は一般的な内容です。個別の税務判断は税理士にご確認ください。</p>
+  <p>&copy; 2026 株式会社DSK</p>
+</div></footer>
+<div class="mobile-bar"><a class="btn" href="../yoyaku.html">無料相談を予約</a></div>
+</body>
+</html>
