@@ -73,6 +73,54 @@ def parse(path):
     return meta, text[m.end():]
 
 
+OG_FONT = "/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf"
+
+
+def og_title(meta):
+    return meta.get("list") or meta["title"].split("｜")[0]
+
+
+def make_og(out, rel, meta):
+    """SNSでシェアされたときの見出し画像（1200x630）を作る。"""
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+    except ImportError:
+        return None
+    import os
+    if not os.path.exists(OG_FONT):
+        return None
+    name = rel.replace("/", "_").replace(".html", ".png")
+    dest = out / "assets/og" / name
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    W, H = 1200, 630
+    im = Image.new("RGB", (W, H), "#0d4a87")
+    d = ImageDraw.Draw(im)
+    for y in range(H):  # 上から下へ濃くなるグラデーション
+        k = y / H
+        d.line([(0, y), (W, y)], fill=(int(13 - 6 * k), int(74 - 32 * k), int(135 - 56 * k)))
+    d.rectangle([0, H - 14, W, H], fill="#e2682c")
+    small = ImageFont.truetype(OG_FONT, 34)
+    d.text((80, 70), "株式会社DSK ｜ 社長のお金の相談", font=small, fill="#ffd27a")
+    title = og_title(meta)
+    size = 64 if len(title) <= 28 else 54
+    font = ImageFont.truetype(OG_FONT, size)
+    lines, line = [], ""
+    for ch in title:
+        if d.textlength(line + ch, font=font) > W - 160:
+            lines.append(line); line = ch
+        else:
+            line += ch
+    lines.append(line)
+    lines = lines[:4]
+    y = (H - len(lines) * (size + 22)) // 2 + 10
+    for ln in lines:
+        d.text((80, y), ln, font=font, fill="#ffffff", stroke_width=1, stroke_fill="#ffffff")
+        y += size + 22
+    d.text((80, H - 90), "独立系FP 五十嵐大輔 ／ 全国オンライン・初回無料", font=small, fill="#dbe7f5")
+    im.save(dest, optimize=True)
+    return "assets/og/" + name
+
+
 def column_items():
     """src/column/*.body.html から一覧用の情報を集める（新しい順）。"""
     items = []
@@ -99,7 +147,7 @@ import hashlib
 CSS_VER = hashlib.md5((SRC / "assets/style.css").read_bytes()).hexdigest()[:8]
 
 
-def render(rel, meta, body, bare):
+def render(rel, meta, body, bare, og=None):
     if "{{column_" in body:
         items = column_items()
         body = body.replace("{{column_list}}", column_list_html(items))
@@ -138,7 +186,9 @@ def render(rel, meta, body, bare):
             f'<meta property="og:description" content="{meta["description"]}">\n'
             f'<meta property="og:type" content="{"article" if "column/" in rel else "website"}">\n'
             f'<meta property="og:url" content="{url}">\n'
-            f'{FONTS}\n<link rel="stylesheet" href="{root}assets/style.css?v={CSS_VER}">\n'
+            + (f'<meta property="og:image" content="{SITE_URL}{og}">\n<meta name="twitter:card" content="summary_large_image">\n' if og else "")
+            + '<meta property="og:site_name" content="株式会社DSK">\n<meta property="og:locale" content="ja_JP">\n'
+            + f'{FONTS}\n<link rel="stylesheet" href="{root}assets/style.css?v={CSS_VER}">\n'
             f'<script type="application/ld+json">{ORG_LD.replace("SITEURL", SITE_URL)}</script>')
     if GA_ID and not bare:
         head += (f'\n<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>'
@@ -168,7 +218,8 @@ def main():
         meta, body = parse(p)
         dest = out / rel
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text(render(rel, meta, body, bare=preview and rel == "index.html"), encoding="utf-8")
+        og = None if preview or rel.endswith("thanks.html") else make_og(out, rel, meta)
+        dest.write_text(render(rel, meta, body, bare=preview and rel == "index.html", og=og), encoding="utf-8")
         pages.append(rel)
     if not preview:
         (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}sitemap.xml\n")
