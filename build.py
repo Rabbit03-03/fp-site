@@ -95,6 +95,10 @@ def column_list_html(items):
                      f'<span class="cat">{i["cat"]}</span></a></li>' for i in items)
 
 
+import hashlib
+CSS_VER = hashlib.md5((SRC / "assets/style.css").read_bytes()).hexdigest()[:8]
+
+
 def render(rel, meta, body, bare):
     if "{{column_" in body:
         items = column_items()
@@ -134,7 +138,7 @@ def render(rel, meta, body, bare):
             f'<meta property="og:description" content="{meta["description"]}">\n'
             f'<meta property="og:type" content="{"article" if "column/" in rel else "website"}">\n'
             f'<meta property="og:url" content="{url}">\n'
-            f'{FONTS}\n<link rel="stylesheet" href="{root}assets/style.css">\n'
+            f'{FONTS}\n<link rel="stylesheet" href="{root}assets/style.css?v={CSS_VER}">\n'
             f'<script type="application/ld+json">{ORG_LD.replace("SITEURL", SITE_URL)}</script>')
     if GA_ID and not bare:
         head += (f'\n<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>'
