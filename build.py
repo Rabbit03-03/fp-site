@@ -12,7 +12,7 @@ SITE_URL = "https://rabbit03-03.github.io/fp-site/"  # 独自ドメインが決�
 FORM_TO = "50dskreal@gmail.com"
 # Web3Forms のアクセスキー（公開してよいキー）。入っていれば FormSubmit の代わりに使う。
 # Googleアナリティクス4 の測定ID（G-で始まる）。入っていれば全ページにタグを入れる。
-GA_ID = ""
+GA_ID = "G-X73G794F7J"
 WEB3_KEY = "35ca5628-eec1-49e4-a5bc-9cf34081bbbd"
 
 ORG_LD = '{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "株式会社DSK", "url": "SITEURL", "foundingDate": "2012-11", "founder": {"@type": "Person", "name": "五十嵐大輔", "jobTitle": "代表取締役"}, "address": {"@type": "PostalAddress", "postalCode": "104-0031", "addressRegion": "東京都", "addressLocality": "中央区", "streetAddress": "京橋2-7-8 2F", "addressCountry": "JP"}, "areaServed": "JP", "sameAs": ["https://www.dsk-real.co.jp/"]}'
