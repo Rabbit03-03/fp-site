@@ -456,3 +456,12 @@ br.sp { display: none; }
 .hero-photo .chip-row .float-chip { white-space: nowrap; font-size: .82rem; padding: 10px 12px; }
 .hero-photo .chip-row .float-chip b { font-size: 1.3rem; }
 @media (min-width: 861px) { .hero-photo .chip-row { width: 380px; margin-left: 50%; transform: translateX(-50%); } }
+/* テーマ別まとめ・関連記事・安心の一言 */
+.hub-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 8px; }
+.hub-nav a { background: var(--primary-soft); color: var(--primary); font-weight: 700; padding: 6px 14px; border-radius: 999px; text-decoration: none; font-size: .95rem; }
+.hub { scroll-margin-top: 90px; }
+.related { margin-top: 36px; }
+.trust-line { font-size: .85rem; color: var(--ink-soft); margin-top: 6px; }
+.next-step { border-top: 1px dashed var(--rule); padding-top: 14px; display: grid; gap: 10px; }
+.ledger.hayami td small { display: block; font-size: .75rem; color: var(--ink-soft); font-weight: 400; }
+.ledger.hayami th, .ledger.hayami td { white-space: nowrap; text-align: center; }

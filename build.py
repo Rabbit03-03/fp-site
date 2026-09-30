@@ -19,7 +19,8 @@ ORG_LD = '{"@context": "https://schema.org", "@type": "ProfessionalService", "na
 
 LINE_URL = "https://lin.ee/SuhoSRC"
 LINE_CTA = ('<div class="line-cta"><div><b>いきなり相談は、まだ早いかなという方へ</b>'
-            '<p>LINEで友だち追加だけでもOKです。気になったことをLINEで気軽に質問できます。</p></div>'
+            '<p>LINEで友だち追加だけでもOKです。気になったことをLINEで気軽に質問できます。</p>'
+            '<p class="trust-line">強引な勧誘はしません ・ 全国オンライン対応 ・ 初回60分無料</p></div>'
             f'<a class="btn line" href="{LINE_URL}" rel="noopener">LINEで友だち追加</a></div>')
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
@@ -143,13 +144,70 @@ def column_list_html(items):
                      f'<span class="cat">{i["cat"]}</span></a></li>' for i in items)
 
 
+# テーマ（カテゴリをまとめた大きな分類）と、関連する無料ツール
+THEMES = [
+    ("shacho", "社長の退職金", ["社長の退職金"], "利益を社長の退職金に変える準備と、受け取るときの税金。",
+     [("tool/taishokukin.html", "退職金の手取りシミュレーター"), ("tool/taishokukin-hayami.html", "退職金の手取り早見表")]),
+    ("staff", "従業員の退職金・福利厚生", ["従業員の退職金"], "中退共・企業型DC・養老保険など、社員のための制度づくり。",
+     [("tool/shindan.html", "1分でわかる無料診断")]),
+    ("hoken", "法人保険・事業保障", ["法人保険", "事業保障"], "社長に万一のときの備えと、加入中の保険の見直し。",
+     [("tool/hosyougaku.html", "必要保障額シミュレーター")]),
+    ("souzoku", "相続・事業承継", ["相続・事業承継", "相続税対策"], "自社株、相続税、後継者へのバトンタッチ。",
+     [("tool/souzokuzei.html", "相続税かんたん試算"), ("tool/souzokuzei-hayami.html", "相続税の早見表")]),
+    ("keiei", "経営のお金", ["経営のお金"], "資金繰り、節税、会社のお金の使い方。", []),
+]
+
+
+def theme_of(cat):
+    for t in THEMES:
+        if cat in t[2]:
+            return t
+    return THEMES[-1]
+
+
+def column_hubs_html(items):
+    out = ['<nav class="hub-nav" aria-label="テーマ">' + "".join(
+        f'<a href="#{t[0]}">{t[1]}</a>' for t in THEMES if any(theme_of(i["cat"]) is t for i in items)) + "</nav>"]
+    for t in THEMES:
+        its = [i for i in items if theme_of(i["cat"]) is t]
+        if not its:
+            continue
+        tools = "".join(f'<li><a href="{{{{root}}}}{h}"><span class="t">{n}</span><span class="cat">無料ツール</span></a></li>' for h, n in t[4])
+        out.append(f'<section class="hub" id="{t[0]}"><h2>{t[1]}</h2><p>{t[3]}</p>'
+                   f'<ul class="col-list">{column_list_html(its)}{tools}</ul></section>')
+    return "\n".join(out)
+
+
+def related_html(rel, body):
+    """記事の最後に「あわせて読みたい」を入れる（同じテーマを優先）。"""
+    items = column_items()
+    me = next((i for i in items if i["href"] == rel), None)
+    if not me:
+        return ""
+    t = theme_of(me["cat"])
+    same = [i for i in items if i is not me and theme_of(i["cat"]) is t]
+    other = [i for i in items if i is not me and theme_of(i["cat"]) is not t]
+    picks = (same + other)[:4]
+    tools = "".join(f'<li><a href="{{{{root}}}}{h}"><span class="t">{n}</span><span class="cat">無料ツール</span></a></li>' for h, n in t[4] if h not in body)
+    return (f'<section class="related"><h2>あわせて読みたい</h2><ul class="col-list">{column_list_html(picks)}{tools}</ul>'
+            f'<p class="note"><a href="{{{{root}}}}column/index.html#{t[0]}">「{t[1]}」の記事をすべて見る</a></p></section>\n')
+
+
 import hashlib
 CSS_VER = hashlib.md5((SRC / "assets/style.css").read_bytes()).hexdigest()[:8]
 
 
 def render(rel, meta, body, bare, og=None):
+    if rel.startswith("column/") and rel != "column/index.html" and '<aside class="author">' in body:
+        body = body.replace('<aside class="author">', related_html(rel, body) + '    <aside class="author">', 1)
+        cat = re.search(r"コラム ／ ([^<]+)</p>", body)
+        if cat:
+            t = theme_of(cat.group(1).strip())
+            body = body.replace(f"／ コラム ／ {cat.group(1)}</p>",
+                                f'／ <a href="{{{{root}}}}column/index.html">コラム</a> ／ <a href="{{{{root}}}}column/index.html#{t[0]}">{cat.group(1)}</a></p>', 1)
     if "{{column_" in body:
         items = column_items()
+        body = body.replace("{{column_hubs}}", column_hubs_html(items))
         body = body.replace("{{column_list}}", column_list_html(items))
         body = re.sub(r"\{\{column_latest:(\d+)\}\}", lambda m: column_list_html(items[:int(m.group(1))]), body)
     depth = rel.count("/")
