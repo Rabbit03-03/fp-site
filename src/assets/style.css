@@ -358,3 +358,29 @@ main > section.seminar-band { background: linear-gradient(135deg, #fff6f0, #fff)
 .rep-points li { border-left: 4px solid var(--primary); background: var(--bg); padding: 10px 14px; border-radius: 0 8px 8px 0; }
 .rep-points strong { display: block; color: var(--primary); }
 @media (max-width: 720px) { .profile-head { grid-template-columns: 1fr; gap: 20px; } .profile-head .rep-photo { max-width: 260px; } }
+
+/* 無料診断 */
+.quiz fieldset { display: grid; gap: 12px; }
+.quiz-progress { font-weight: 700; color: var(--primary); text-align: right; margin: 0; }
+.quiz-q { border: 1px solid var(--rule); border-radius: 10px; padding: 14px 16px; display: grid; gap: 10px; background: var(--bg); }
+.quiz-q p { margin: 0; }
+.quiz-q b { color: var(--primary); margin-right: 4px; }
+.yn { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.yn label { position: relative; cursor: pointer; }
+.yn input { position: absolute; opacity: 0; }
+.yn span { display: block; text-align: center; padding: 10px; border: 2px solid var(--rule); border-radius: 999px; font-weight: 700; transition: .15s; }
+.yn input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+.yn input[value="1"]:checked + span { background: var(--primary); border-color: var(--primary); color: #fff; }
+.yn input[value="0"]:checked + span { background: var(--primary-soft); border-color: var(--primary-soft); color: var(--primary); }
+.quiz-result h2 { margin: 0; }
+.quiz-bars { display: grid; gap: 10px; }
+.qb { display: grid; grid-template-columns: 11em minmax(0, 1fr) 3em; gap: 10px; align-items: center; font-size: .95rem; }
+.qb-track { height: 14px; background: var(--primary-soft); border-radius: 999px; overflow: hidden; }
+.qb-track span { display: block; height: 100%; border-radius: 999px; background: var(--primary); transition: width .5s ease; }
+.qb.high .qb-track span { background: var(--accent); }
+.qb.high .qb-name { color: var(--accent-dark); font-weight: 700; }
+.qb-num { font-weight: 700; text-align: right; }
+.qr h3 { font-size: 1.05rem; margin: 8px 0 4px; }
+.qr ul { margin: 0; padding-left: 1.2em; }
+.note.center { text-align: center; }
+@media (max-width: 520px) { .qb { grid-template-columns: minmax(0, 1fr) 3em; } .qb-name { grid-column: 1 / -1; } }

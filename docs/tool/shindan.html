@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>社長のお金の相談が必要か分かる12の質問（無料診断）｜株式会社DSK</title>
+<meta name="description" content="社長の退職金、従業員の退職金、法人保険、相続・事業承継。12の質問に「はい・いいえ」で答えるだけで、今のうちに見直したほうがよいテーマが分かります。回答はどこにも送信されません。">
+<link rel="canonical" href="https://rabbit03-03.github.io/fp-site/tool/shindan.html">
+<meta property="og:title" content="社長のお金の相談が必要か分かる12の質問（無料診断）｜株式会社DSK">
+<meta property="og:description" content="社長の退職金、従業員の退職金、法人保険、相続・事業承継。12の質問に「はい・いいえ」で答えるだけで、今のうちに見直したほうがよいテーマが分かります。回答はどこにも送信されません。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rabbit03-03.github.io/fp-site/tool/shindan.html">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "株式会社DSK", "url": "https://rabbit03-03.github.io/fp-site/", "foundingDate": "2012-11", "founder": {"@type": "Person", "name": "五十嵐大輔", "jobTitle": "代表取締役"}, "address": {"@type": "PostalAddress", "postalCode": "104-0031", "addressRegion": "東京都", "addressLocality": "中央区", "streetAddress": "京橋2-7-8 2F", "addressCountry": "JP"}, "areaServed": "JP", "sameAs": ["https://www.dsk-real.co.jp/"]}</script>
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="brand" href="../index.html"><b>株式会社DSK</b><small>東京の独立系FP ／ 全国の社長のご相談</small></a>
+  <nav class="nav" aria-label="メイン">
+    <a href="../houjin.html">法人のご相談</a>
+    <a href="../column/houjin-nisa.html">法人NISA</a>
+    <a href="../column/index.html">コラム</a>
+    <a href="../profile.html">代表紹介</a>
+    <a href="../company.html">会社概要</a>
+    <a href="../yoyaku.html">無料相談</a>
+  </nav>
+</div></header>
+<main>
+  <div class="article">
+    <p class="crumbs"><a href="../index.html">トップ</a> ／ 社長のお金 無料診断</p>
+    <h1>1分でわかる<br>「社長のお金」無料診断</h1>
+    <p>12の質問に「はい」か「いいえ」で答えるだけです。当てはまるものが多いテーマほど、早めに見直す価値があります。回答はどこにも送信されません。</p>
+
+    <form class="form sim quiz" id="quiz" onsubmit="return false">
+      <p class="quiz-progress" aria-live="polite"><span id="done">0</span> / 12 問に回答</p>
+      <div id="qs"></div>
+      <div class="btn-row center"><button type="button" class="btn" id="go">結果を見る</button></div>
+      <p class="note center" id="warn" hidden>まだ答えていない質問があります。</p>
+    </form>
+
+    <section class="sim-result quiz-result" id="result" hidden aria-live="polite">
+      <p class="eyebrow">診断結果</p>
+      <h2 id="rTitle"></h2>
+      <p id="rText"></p>
+      <div class="quiz-bars" id="rBars"></div>
+      <div id="rRead"></div>
+      <div class="btn-row center">
+        <a class="btn" id="rBook" href="../yoyaku.html">この結果で無料相談を予約する</a>
+        <button type="button" class="btn ghost" id="again">もう一度やり直す</button>
+      </div>
+      <p class="note">診断は一般的な目安です。会社ごとの最適な方法は、決算書や加入中の保険を見て判断します。</p>
+    </section>
+
+    <div class="inline-cta">
+      <p>初回のオンライン相談（60分）は無料です。「当てはまった項目を見てほしい」だけでも大丈夫です。</p>
+      <div class="btn-row"><a class="btn" href="../yoyaku.html">無料相談を予約する</a></div>
+    </div>
+    <div class="line-cta"><div><b>いきなり相談は、まだ早いかなという方へ</b><p>LINEで友だち追加だけでもOKです。気になったことをLINEで気軽に質問できます。</p></div><a class="btn line" href="https://lin.ee/SuhoSRC" rel="noopener">LINEで友だち追加</a></div>
+  </div>
+</main>
+<script>
+(function () {
+  var ROOT = "../";
+  var THEMES = [
+    { key: "yakuin", name: "社長ご自身の退職金", qs: [
+      "ご自身の退職金を、いくら・どうやって準備するか決まっていない",
+      "役員退職金規程がない、または何年も見直していない",
+      "利益が出た年は、決算の直前に慌てて節税を考えている"],
+      links: [["column/houjin-nisa.html", "法人NISAとは？利益を社長の退職金に変えるしくみ"], ["column/yakuin-taishokukin-kitei.html", "役員退職金規程の作り方"], ["tool/taishokukin.html", "退職金の手取りシミュレーター"]] },
+    { key: "staff", name: "従業員の退職金・福利厚生", qs: [
+      "従業員の退職金制度がない、または中身をよく知らない",
+      "採用や定着のために、福利厚生を充実させたい",
+      "従業員の退職が重なったとき、退職金を払えるか分からない"],
+      links: [["column/taishokukin-seido.html", "従業員の退職金制度の比較"], ["column/kyousai-hikaku.html", "中退共・小規模企業共済などの比較"]] },
+    { key: "hoken", name: "法人保険の見直し", qs: [
+      "会社で入っている保険の目的と、解約したときの戻り額を説明できない",
+      "保険は付き合いや、勧められるままに入った",
+      "社長に万一のことがあったとき、借入金の返済や運転資金が足りるか分からない"],
+      links: [["column/jigyou-hoshou.html", "社長の万一に備える事業保障の考え方"], ["houjin.html", "法人保険のセカンドオピニオン（診断のみもOK）"]] },
+    { key: "souzoku", name: "相続・事業承継", qs: [
+      "自社株の評価額がいくらか知らない",
+      "後継者や会社の将来について、家族とまだ話せていない",
+      "ご自身の相続税がどのくらいかかるか把握していない"],
+      links: [["column/seimeihoken-souzoku.html", "生命保険を使った相続対策"]] }
+  ];
+  var qs = document.getElementById("qs"), n = 0, html = "";
+  THEMES.forEach(function (t, ti) {
+    html += '<fieldset><legend>' + (ti + 1) + '. ' + t.name + '</legend>';
+    t.qs.forEach(function (q, qi) {
+      n++;
+      var id = "q" + ti + "_" + qi;
+      html += '<div class="quiz-q"><p><b>Q' + n + '</b> ' + q + '</p><div class="yn">' +
+        '<label><input type="radio" name="' + id + '" value="1"><span>はい</span></label>' +
+        '<label><input type="radio" name="' + id + '" value="0"><span>いいえ</span></label></div></div>';
+    });
+    html += '</fieldset>';
+  });
+  qs.innerHTML = html;
+  var form = document.getElementById("quiz"), result = document.getElementById("result");
+  function answered() { return form.querySelectorAll("input:checked").length; }
+  form.addEventListener("change", function () { document.getElementById("done").textContent = answered(); document.getElementById("warn").hidden = true; });
+
+  document.getElementById("go").addEventListener("click", function () {
+    if (answered() < 12) { document.getElementById("warn").hidden = false; var first = null;
+      form.querySelectorAll(".quiz-q").forEach(function (q) { if (!first && !q.querySelector("input:checked")) first = q; });
+      if (first) first.scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+    var total = 0, scores = THEMES.map(function (t, ti) {
+      var s = 0; t.qs.forEach(function (_, qi) { var c = form.querySelector('input[name="q' + ti + '_' + qi + '"]:checked'); if (c && c.value === "1") s++; });
+      total += s; return s; });
+    var title, text;
+    if (total >= 6) { title = "早めのご相談をおすすめします（" + total + "／12）"; text = "当てはまる項目が多く、準備が後回しになっている可能性があります。対策は時間があるほど選べる方法が増えます。まずは一度、状況を整理しましょう。"; }
+    else if (total >= 3) { title = "一度、点検しておくと安心です（" + total + "／12）"; text = "いくつか気になるテーマがあります。下の色が濃いテーマから、記事で確認するか、無料相談で優先順位をつけてみてください。"; }
+    else { title = "大きな心配は少なそうです（" + total + "／12）"; text = "よく準備ができています。制度や税制は変わるため、数年に一度の見直しがおすすめです。"; }
+    document.getElementById("rTitle").textContent = title;
+    document.getElementById("rText").textContent = text;
+    var bars = "", read = "", hit = [];
+    THEMES.forEach(function (t, i) {
+      var s = scores[i], lv = s >= 2 ? "high" : s === 1 ? "mid" : "low";
+      bars += '<div class="qb ' + lv + '"><span class="qb-name">' + t.name + '</span><span class="qb-track"><span style="width:' + (s / 3 * 100) + '%"></span></span><span class="qb-num">' + s + '/3</span></div>';
+      if (s > 0) { hit.push(t.name);
+        read += '<div class="qr"><h3>' + t.name + 'を見直すなら</h3><ul>' + t.links.map(function (l) { return '<li><a href="' + ROOT + l[0] + '">' + l[1] + '</a></li>'; }).join("") + '</ul></div>'; }
+    });
+    document.getElementById("rBars").innerHTML = bars;
+    document.getElementById("rRead").innerHTML = read;
+    document.getElementById("rBook").href = ROOT + "yoyaku.html?shindan=" + encodeURIComponent(total + "/12" + (hit.length ? "（" + hit.join("・") + "）" : ""));
+    result.hidden = false;
+    result.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  document.getElementById("again").addEventListener("click", function () {
+    form.reset(); document.getElementById("done").textContent = 0; result.hidden = true; form.scrollIntoView({ behavior: "smooth" });
+  });
+})();
+</script>
+<footer class="site-foot"><div class="wrap">
+  <p><b>株式会社DSK</b>　〒104-0031 東京都中央区京橋2-7-8 2F　全国オンライン対応／福岡は毎月1回対面</p>
+  <p class="foot-links"><a href="../company.html">会社概要</a><a href="../houjin.html#faq">よくあるご質問</a><a href="https://www.dsk-real.co.jp/blank-8" rel="noopener">個人情報保護方針</a><a href="../seminar.html">無料セミナー</a><a href="https://lin.ee/SuhoSRC" rel="noopener">LINE公式アカウント</a><a href="https://www.dsk-real.co.jp/" rel="noopener">個人のお客様向けサイト</a></p>
+  <p>当サイトの情報は一般的な内容です。個別の税務判断は税理士にご確認ください。</p>
+  <p>&copy; 2026 株式会社DSK</p>
+</div></footer>
+<div class="mobile-bar"><a class="btn" href="../yoyaku.html">無料相談を予約</a></div>
+</body>
+</html>

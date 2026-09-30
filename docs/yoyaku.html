@@ -105,6 +105,8 @@
       <p class="note">送信後、迷惑メール防止の確認画面が表示されることがあります。</p>
     </form>
     <script>
+    (function () { var m = location.search.match(/[?&]shindan=([^&]*)/); if (!m) return;
+      var t = document.getElementById("msg"); if (t && !t.value) t.value = "【無料診断の結果】" + decodeURIComponent(m[1]) + "\n"; })();
     document.querySelector("form.form").addEventListener("submit", function () {
       document.getElementById("topics").value = Array.prototype.map.call(document.querySelectorAll("[data-topic]:checked"), function (c) { return c.value; }).join(" / ");
     });
