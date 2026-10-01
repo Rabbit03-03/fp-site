@@ -274,7 +274,9 @@ def render(rel, meta, body, bare, og=None):
     if GA_ID and not bare:
         head += (f'\n<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>'
                  "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
-                 f"gtag('js',new Date());gtag('config','{GA_ID}');</script>")
+                 f"gtag('js',new Date());gtag('config','{GA_ID}');"
+                 "document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href$=\".pdf\"]');"
+                 "if(a)gtag('event','pdf_download',{file_name:a.getAttribute('href').split('/').pop(),page_path:location.pathname});});</script>")
     inner = HEADER.format(root=root) + "\n" + body + FOOTER.format(root=root)
     if bare:
         head = head.replace(f'<title>{meta["title"]}</title>', "<title>社長向けFPサイト</title>", 1)
