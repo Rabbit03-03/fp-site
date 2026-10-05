@@ -19,7 +19,7 @@
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <meta name="theme-color" content="#0d4a87">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/style.css?v=cbe1eb45">
+<link rel="stylesheet" href="assets/style.css?v=0148c4a5">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "株式会社DSK", "url": "https://rabbit03-03.github.io/fp-site/", "foundingDate": "2012-11", "founder": {"@type": "Person", "name": "五十嵐大輔", "jobTitle": "代表取締役"}, "address": {"@type": "PostalAddress", "postalCode": "104-0031", "addressRegion": "東京都", "addressLocality": "中央区", "streetAddress": "京橋2-7-8 2F", "addressCountry": "JP"}, "areaServed": "JP", "sameAs": ["https://www.dsk-real.co.jp/"]}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-X73G794F7J"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-X73G794F7J');document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href$=".pdf"]');if(a)gtag('event','pdf_download',{file_name:a.getAttribute('href').split('/').pop(),page_path:location.pathname});});</script>
 </head>
@@ -100,9 +100,11 @@
     </div>
   </section>
 
-  <section id="shindan" class="shindan-sec">
+  <section id="shindan" class="shindan-sec is-closed">
     <div class="wrap narrow">
       <div class="sec-head"><p class="eyebrow">無料診断・1分</p><h2>相談したほうがいい？<br>12の質問で分かります</h2><p>「はい・いいえ」で答えるだけ。見直すべきテーマが色で分かります。回答はどこにも送信されません。</p></div>
+      <div class="btn-row center shindan-open"><button type="button" class="btn" id="shindanOpen">診断をはじめる（12問）</button></div>
+      <div class="shindan-body">
           <form class="form sim quiz" id="quiz" onsubmit="return false">
       <p class="quiz-progress" aria-live="polite"><span id="done">0</span> / 12 問に回答</p>
       <div id="qs"></div>
@@ -197,8 +199,18 @@
 })();
 </script>
 
+      </div>
     </div>
   </section>
+  <script>
+  (function () {
+    var sec = document.getElementById("shindan");
+    function open() { if (sec.classList.contains("is-closed") && window.gtag) gtag("event", "shindan_open"); sec.classList.remove("is-closed"); }
+    document.getElementById("shindanOpen").addEventListener("click", open);
+    document.querySelectorAll('a[href="#shindan"]').forEach(function (a) { a.addEventListener("click", open); });
+    if (location.hash === "#shindan") open();
+  })();
+  </script>
 
   <section>
     <div class="wrap">

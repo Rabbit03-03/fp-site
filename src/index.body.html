@@ -67,12 +67,24 @@ description: 全国の中小企業の社長向けに、従業員の退職金制�
     </div>
   </section>
 
-  <section id="shindan" class="shindan-sec">
+  <section id="shindan" class="shindan-sec is-closed">
     <div class="wrap narrow">
       <div class="sec-head"><p class="eyebrow">無料診断・1分</p><h2>相談したほうがいい？<br>12の質問で分かります</h2><p>「はい・いいえ」で答えるだけ。見直すべきテーマが色で分かります。回答はどこにも送信されません。</p></div>
+      <div class="btn-row center shindan-open"><button type="button" class="btn" id="shindanOpen">診断をはじめる（12問）</button></div>
+      <div class="shindan-body">
       {{include:shindan}}
+      </div>
     </div>
   </section>
+  <script>
+  (function () {
+    var sec = document.getElementById("shindan");
+    function open() { if (sec.classList.contains("is-closed") && window.gtag) gtag("event", "shindan_open"); sec.classList.remove("is-closed"); }
+    document.getElementById("shindanOpen").addEventListener("click", open);
+    document.querySelectorAll('a[href="#shindan"]').forEach(function (a) { a.addEventListener("click", open); });
+    if (location.hash === "#shindan") open();
+  })();
+  </script>
 
   <section>
     <div class="wrap">
