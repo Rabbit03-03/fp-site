@@ -138,7 +138,7 @@ def column_items():
                       "title": meta.get("list") or meta["title"].split("｜")[0],
                       "cat": cat.group(1).strip() if cat else "コラム",
                       "date": date.group(1) if date else "",
-                      "mtime": p.stat().st_mtime})
+                      "mtime": p.name})
     return sorted(items, key=lambda i: (i["date"], i["mtime"]), reverse=True)
 
 
@@ -208,13 +208,17 @@ def render(rel, meta, body, bare, og=None):
             t = theme_of(cat.group(1).strip())
             body = body.replace(f"／ コラム ／ {cat.group(1)}</p>",
                                 f'／ <a href="{{{{root}}}}column/index.html">コラム</a> ／ <a href="{{{{root}}}}column/index.html#{t[0]}">{cat.group(1)}</a></p>', 1)
+    if meta.get("updated") and '<time datetime="' in body:
+        y, m, d = meta["updated"].split("-")
+        body = re.sub(r'(公開：<time datetime="[0-9-]+">[^<]+</time></span>)',
+                      lambda mm: mm.group(1) + f'<span>更新：<time datetime="{meta["updated"]}">{y}年{int(m)}月{int(d)}日</time></span>', body, count=1)
     if "{{column_" in body:
         items = column_items()
         body = body.replace("{{column_hubs}}", column_hubs_html(items))
         body = body.replace("{{column_list}}", column_list_html(items))
         body = re.sub(r"\{\{column_latest:(\d+)\}\}", lambda m: column_list_html(items[:int(m.group(1))]), body)
     depth = rel.count("/")
-    root = "../" * depth
+    root = SITE_URL if rel == "404.html" else "../" * depth
     body = re.sub(r"\{\{include:([\w-]+)\}\}", lambda m: (SRC / "partials" / (m.group(1) + ".html")).read_text(encoding="utf-8"), body)
     body = body.replace("{{dl_banner}}", DL_BANNER)
     body = body.replace("{{root}}", root).replace("{{site_url}}", SITE_URL).replace("{{line_cta}}", LINE_CTA)
@@ -242,7 +246,7 @@ def render(rel, meta, body, bare, og=None):
     url = SITE_URL + rel.replace("index.html", "")
     head = (f'<title>{meta["title"]}</title>\n'
             f'<meta name="description" content="{meta["description"]}">\n'
-            + ('<meta name="robots" content="noindex">\n' if rel.endswith("thanks.html") else "")
+            + ('<meta name="robots" content="noindex">\n' if rel.endswith("thanks.html") or rel == "404.html" else "")
             + f'<link rel="canonical" href="{url}">\n'
             f'<meta property="og:title" content="{meta["title"]}">\n'
             f'<meta property="og:description" content="{meta["description"]}">\n'
@@ -250,6 +254,7 @@ def render(rel, meta, body, bare, og=None):
             f'<meta property="og:url" content="{url}">\n'
             + (f'<meta property="og:image" content="{SITE_URL}{og}">\n<meta name="twitter:card" content="summary_large_image">\n' if og else "")
             + '<meta property="og:site_name" content="株式会社DSK">\n<meta property="og:locale" content="ja_JP">\n'
+            + f'<link rel="icon" href="{root}assets/img/favicon.svg" type="image/svg+xml">\n<link rel="icon" href="{root}assets/img/favicon-32.png" sizes="32x32">\n<link rel="apple-touch-icon" href="{root}assets/img/apple-touch-icon.png">\n<meta name="theme-color" content="#0d4a87">\n'
             + f'{FONTS}\n<link rel="stylesheet" href="{root}assets/style.css?v={CSS_VER}">\n'
             f'<script type="application/ld+json">{ORG_LD.replace("SITEURL", SITE_URL)}</script>')
     if rel.startswith("column/") and rel != "column/index.html":
@@ -261,7 +266,8 @@ def render(rel, meta, body, bare, og=None):
                "author": {"@type": "Person", "name": "五十嵐 大輔", "jobTitle": "代表取締役・AFP", "url": SITE_URL + "profile.html"},
                "publisher": {"@type": "Organization", "name": "株式会社DSK", "url": SITE_URL}}
         if date:
-            art["datePublished"] = art["dateModified"] = date.group(1)
+            art["datePublished"] = date.group(1)
+            art["dateModified"] = meta.get("updated", date.group(1))
         if og:
             art["image"] = SITE_URL + og
         crumbs = [("トップ", SITE_URL), ("コラム", SITE_URL + "column/")]
@@ -302,16 +308,19 @@ def main():
         meta, body = parse(p)
         dest = out / rel
         dest.parent.mkdir(parents=True, exist_ok=True)
-        og = None if preview or rel.endswith("thanks.html") else make_og(out, rel, meta)
+        og = None if preview or rel.endswith("thanks.html") or rel == "404.html" else make_og(out, rel, meta)
         dest.write_text(render(rel, meta, body, bare=preview and rel == "index.html", og=og), encoding="utf-8")
-        pages.append(rel)
+        date = meta.get("updated") or (re.search(r'<time datetime="([0-9-]+)"', body) or [None, None])[1]
+        pages.append((rel, date))
     if not preview:
+        (out / ".nojekyll").write_text("")
         (out / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}sitemap.xml\n")
-        urls = "".join(f"  <url><loc>{SITE_URL}{r.replace('index.html', '')}</loc></url>\n" for r in pages if not r.endswith('thanks.html'))
+        urls = "".join(f"  <url><loc>{SITE_URL}{r.replace('index.html', '')}</loc>" + (f"<lastmod>{d}</lastmod>" if d else "") + "</url>\n"
+                       for r, d in pages if not r.endswith('thanks.html') and r != "404.html")
         (out / "sitemap.xml").write_text(
             '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
             + urls + "</urlset>\n")
-    print(out, pages)
+    print(out, [r for r, _ in pages])
 
 
 if __name__ == "__main__":
