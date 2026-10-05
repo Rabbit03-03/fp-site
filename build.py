@@ -28,7 +28,9 @@ LINE_CTA = ('<div class="line-cta"><div><b>いきなり相談は、まだ早い�
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">')
+         # 表示を止めないよう、フォントは後から読み込む（届くまでは端末の標準フォントで表示）。500は400に寄せて1種類減らす
+         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" media="print" onload="this.media=\'all\'">'
+         '<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap"></noscript>')
 
 HEADER = """<header class="site-head"><div class="wrap">
   <a class="brand" href="{root}index.html"><b>株式会社DSK</b><small>東京の独立系FP ／ 全国の社長のご相談</small></a>
@@ -44,7 +46,7 @@ HEADER = """<header class="site-head"><div class="wrap">
 
 FOOTER = """<footer class="site-foot"><div class="wrap">
   <p><b>株式会社DSK</b>　〒104-0031 東京都中央区京橋2-7-8 2F　全国オンライン対応／福岡は毎月1回対面</p>
-  <p class="foot-links"><a href="{root}company.html">会社概要</a><a href="{root}houjin.html#faq">よくあるご質問</a><a href="https://www.dsk-real.co.jp/blank-8" rel="noopener">個人情報保護方針</a><a href="{root}seminar.html">無料セミナー</a><a href="https://lin.ee/SuhoSRC" rel="noopener">LINE公式アカウント</a><a href="https://www.dsk-real.co.jp/" rel="noopener">個人のお客様向けサイト</a></p>
+  <p class="foot-links"><a href="{root}company.html">会社概要</a><a href="{root}houjin.html#faq">よくあるご質問</a><a href="{root}yougo.html">用語集</a><a href="https://www.dsk-real.co.jp/blank-8" rel="noopener">個人情報保護方針</a><a href="{root}seminar.html">無料セミナー</a><a href="https://lin.ee/SuhoSRC" rel="noopener">LINE公式アカウント</a><a href="https://www.dsk-real.co.jp/" rel="noopener">個人のお客様向けサイト</a></p>
   <p>当サイトの情報は一般的な内容です。個別の税務判断は税理士にご確認ください。</p>
   <p>&copy; 2026 株式会社DSK</p>
 </div></footer>
@@ -161,6 +163,16 @@ THEMES = [
 ]
 
 
+# 記事の途中の相談案内（定型文のときだけ、テーマに合わせた一文に差し替える）
+CTA_TEXT = {
+    "shacho": "利益と在任年数から、社長の退職金をいくら・どう準備できるか一緒に試算します。",
+    "staff": "従業員の人数と給与から、御社に合う退職金・福利厚生の組み合わせを一緒に考えます。",
+    "hoken": "加入中の保険証券を見ながら、保険の目的と解約したときの戻り額を一緒に整理します。",
+    "souzoku": "自社株や保険を含めて、相続税の目安と納税資金を一緒に整理します。",
+    "keiei": "決算書を見ながら、会社と社長個人にお金を残す方法を一緒に考えます。",
+}
+
+
 def theme_of(cat):
     for t in THEMES:
         if cat in t[2]:
@@ -206,6 +218,8 @@ def render(rel, meta, body, bare, og=None):
         cat = re.search(r"コラム ／ ([^<]+)</p>", body)
         if cat:
             t = theme_of(cat.group(1).strip())
+            body = re.sub(r'(<div class="inline-cta">\s*<p>)(?:読んで気になったことは、)?オンラインで60分、無料でご相談いただけます。[^<]*(</p>)',
+                          lambda m: m.group(1) + CTA_TEXT[t[0]] + "オンラインで60分、初回は無料です。全国どこからでもご利用いただけます。" + m.group(2), body)
             body = body.replace(f"／ コラム ／ {cat.group(1)}</p>",
                                 f'／ <a href="{{{{root}}}}column/index.html">コラム</a> ／ <a href="{{{{root}}}}column/index.html#{t[0]}">{cat.group(1)}</a></p>', 1)
     if meta.get("updated") and '<time datetime="' in body:
@@ -282,7 +296,10 @@ def render(rel, meta, body, bare, og=None):
                  "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
                  f"gtag('js',new Date());gtag('config','{GA_ID}');"
                  "document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href$=\".pdf\"]');"
-                 "if(a)gtag('event','pdf_download',{file_name:a.getAttribute('href').split('/').pop(),page_path:location.pathname});});</script>")
+                 "if(a)gtag('event','pdf_download',{file_name:a.getAttribute('href').split('/').pop(),page_path:location.pathname});"
+                 # ボタンのクリックを場所ごとに記録（GAの「イベント」→ cta_click で、cta_place 別に見られる）
+                 "var b=e.target.closest&&e.target.closest('a.btn');if(b){var w=b.closest('.inline-cta,.line-cta,.mobile-bar,.dl-banner,.hero,.cta,.related,.sim-result,.site-head');"
+                 "gtag('event','cta_click',{cta_place:w?w.className.split(' ')[0]:'other',cta_text:b.textContent.trim().slice(0,30),link_url:b.getAttribute('href'),page_path:location.pathname});}});</script>")
     inner = HEADER.format(root=root) + "\n" + body + FOOTER.format(root=root)
     if bare:
         head = head.replace(f'<title>{meta["title"]}</title>', "<title>社長向けFPサイト</title>", 1)
