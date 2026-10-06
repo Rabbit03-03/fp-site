@@ -8,7 +8,7 @@ from gen_hayami import retire_net, souzoku
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = "https://rabbit03-03.github.io/fp-site/"
-LINE = "https://lin.ee/SuhoSRC"
+LINE = "https://line.me/R/ti/p/@934yeqps"
 FONT = "/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf"
 
 
