@@ -15,7 +15,7 @@ FORM_TO = "50dskreal@gmail.com"
 GA_ID = "G-X73G794F7J"
 WEB3_KEY = "35ca5628-eec1-49e4-a5bc-9cf34081bbbd"
 
-ORG_LD = '{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "株式会社DSK", "url": "SITEURL", "foundingDate": "2012-11", "founder": {"@type": "Person", "name": "五十嵐大輔", "jobTitle": "代表取締役"}, "address": {"@type": "PostalAddress", "postalCode": "104-0031", "addressRegion": "東京都", "addressLocality": "中央区", "streetAddress": "京橋2-7-8 2F", "addressCountry": "JP"}, "areaServed": "JP", "sameAs": ["https://www.dsk-real.co.jp/"]}'
+ORG_LD = '{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "株式会社DSK", "url": "SITEURL", "foundingDate": "2012-11", "founder": {"@type": "Person", "name": "五十嵐大輔", "jobTitle": "代表取締役"}, "address": {"@type": "PostalAddress", "postalCode": "104-0031", "addressRegion": "東京都", "addressLocality": "中央区", "streetAddress": "京橋2-7-8 2F", "addressCountry": "JP"}, "areaServed": "JP", "sameAs": ["https://www.dsk-real.co.jp/", "https://note.com/dsk_real_50"]}'
 
 LINE_URL = "https://line.me/R/ti/p/@934yeqps"
 DL_BANNER = ('<div class="dl-banner"><img src="{{root}}assets/img/checksheet-cover.jpg" alt="" width="84" height="119" loading="lazy">'
@@ -46,7 +46,7 @@ HEADER = """<header class="site-head"><div class="wrap">
 
 FOOTER = """<footer class="site-foot"><div class="wrap">
   <p><b>株式会社DSK</b>　〒104-0031 東京都中央区京橋2-7-8 2F　全国オンライン対応／福岡は毎月1回対面</p>
-  <p class="foot-links"><a href="{root}company.html">会社概要</a><a href="{root}houjin.html#faq">よくあるご質問</a><a href="{root}yougo.html">用語集</a><a href="https://www.dsk-real.co.jp/blank-8" rel="noopener">個人情報保護方針</a><a href="{root}seminar.html">無料セミナー</a><a href="https://line.me/R/ti/p/@934yeqps" rel="noopener">LINE公式アカウント</a><a href="https://www.dsk-real.co.jp/" rel="noopener">個人のお客様向けサイト</a></p>
+  <p class="foot-links"><a href="{root}company.html">会社概要</a><a href="{root}houjin.html#faq">よくあるご質問</a><a href="{root}yougo.html">用語集</a><a href="https://www.dsk-real.co.jp/blank-8" rel="noopener">個人情報保護方針</a><a href="{root}seminar.html">無料セミナー</a><a href="https://line.me/R/ti/p/@934yeqps" rel="noopener">LINE公式アカウント</a><a href="https://note.com/dsk_real_50" rel="noopener">note</a><a href="https://www.dsk-real.co.jp/" rel="noopener">個人のお客様向けサイト</a></p>
   <p>当サイトの情報は一般的な内容です。個別の税務判断は税理士にご確認ください。</p>
   <p>&copy; 2026 株式会社DSK</p>
 </div></footer>
