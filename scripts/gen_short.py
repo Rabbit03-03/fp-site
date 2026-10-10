@@ -7,6 +7,8 @@
                    最後の2場面（代表紹介・予約）は video-src/voice/fixed_*.wav を使い回す。
   --voice female : 女性の合成音声（Open JTalk + HTS Voice "Mei"、CC BY 3.0 のため最後の画面に表記）。
   --voice none   : 音なし。
+  --voice closing: 中身の3場面は文字だけ、最後の代表紹介・予約の2場面だけ本人の声（録音なしで作れる）。
+  --no-embed     : 動画だけ作り、コラムには入れない（試作用）。
 
 台本（JSON）の形:
   {"slug": "shacho-nenkin-mikomi", "date": "2026-10-09",
@@ -144,7 +146,7 @@ function render(t){
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("spec"); ap.add_argument("--voice", default="self", choices=["self", "female", "none"]); ap.add_argument("--rec")
+    ap.add_argument("spec"); ap.add_argument("--voice", default="self", choices=["self", "female", "none", "closing"]); ap.add_argument("--rec"); ap.add_argument("--no-embed", action="store_true")
     a = ap.parse_args()
     spec = json.loads(pathlib.Path(a.spec).read_text())
     name = f'{spec["date"]}-{spec["slug"]}'
@@ -155,6 +157,13 @@ def main():
     if a.voice == "self":
         if not a.rec: raise SystemExit("--voice self には --rec（録音ファイル）が必要です")
         lines = split_recording(a.rec, len(sc), tmp) + [VS / "voice/fixed_profile.wav", VS / "voice/fixed_cta.wav"]
+    elif a.voice == "closing":
+        # 中身の3場面は文字だけ（無音）、最後の代表紹介・予約だけ本人の声
+        for k, sec in enumerate([3.5, 6.0, 6.5][:len(sc)]):
+            p = pathlib.Path(tmp) / f"sil{k}.wav"
+            o = wave.open(str(p), "w"); o.setnchannels(1); o.setsampwidth(2); o.setframerate(SR); o.writeframes(b"\0\0" * int(sec * SR)); o.close()
+            lines.append(p)
+        lines += [VS / "voice/fixed_profile.wav", VS / "voice/fixed_cta.wav"]
     elif a.voice == "female":
         for k, s in enumerate(sc):
             p = pathlib.Path(tmp) / f"line{k}.wav"; tts(s["say"], a.voice, p); lines.append(p)
@@ -179,7 +188,7 @@ def main():
         raw = pathlib.Path(tmp) / "narr_raw.wav"
         o = wave.open(str(raw), "w"); o.setnchannels(1); o.setsampwidth(2); o.setframerate(SR); o.writeframes(buf.tobytes()); o.close()
         narr = pathlib.Path(tmp) / "narr.wav"
-        af = "highpass=f=80,afftdn=nf=-30,loudnorm=I=-16:TP=-1.5" if a.voice == "self" else "loudnorm=I=-16:TP=-1.5"
+        af = "highpass=f=80,afftdn=nf=-30,loudnorm=I=-16:TP=-1.5" if a.voice in ("self", "closing") else "loudnorm=I=-16:TP=-1.5"
         subprocess.run([ffmpeg(), "-loglevel", "error", "-y", "-i", str(raw), "-af", af, "-ar", str(SR), str(narr)], check=True)
     # 4. 画面
     n = len(sc)
@@ -211,10 +220,12 @@ def main():
     poster.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run([ffmpeg(), "-loglevel", "error", "-y", "-ss", "2.5", "-i", str(out), "-frames:v", "1", "-vf", "scale=540:960", "-q:v", "4", str(poster)], check=True)
     # 5. コラムに埋め込む（既にあれば差し替え）
+    if a.no_embed:
+        print(f"OK {out.relative_to(ROOT)} {T}秒（記事には入れていません）"); shutil.rmtree(tmp); return
     col = ROOT / f'src/column/{spec["slug"]}.body.html'
     s = col.read_text()
     s = re.sub(r'\n    <figure class="short-video">.*?</script>\n\n?', "\n", s, flags=re.S)
-    who = "代表 五十嵐の声でお話ししています" if a.voice == "self" else ("音声は合成音声です" if a.voice == "female" else "音なし")
+    who = "代表 五十嵐の声でお話ししています" if a.voice == "self" else "最後に代表 五十嵐がお話ししています" if a.voice == "closing" else ("音声は合成音声です" if a.voice == "female" else "音なし")
     ld = {"@context": "https://schema.org", "@type": "VideoObject", "name": spec["title"], "description": spec["description"],
           "thumbnailUrl": f"{SITE}assets/img/video/{name}.jpg", "contentUrl": f"{SITE}assets/dl/{name}.mp4",
           "uploadDate": f'{spec["date"]}T09:00:00+09:00', "duration": f"PT{round(T)}S"}
